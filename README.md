@@ -135,9 +135,9 @@ Este projeto segue algumas decisões de design:
 
 Atualizar esta seção conforme os assets forem adicionados ao projeto.
 
-| Música/Som | Autor/Fonte | Licença   | Uso no jogo | Link      |
-| ---------- | ----------- | --------- | ----------- | --------- |
-| A definir  | A definir   | A definir | A definir   | A definir |
+| Música/Som | Autor/Fonte   | Uso no jogo |
+| ---------- | ----------- | ----------- |
+| DOE DEER  | Che    | Tema de batalha do primeiro boss   |
 
 ## Créditos de arte
 
