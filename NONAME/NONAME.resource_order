@@ -1,0 +1,6 @@
+{
+  "FolderOrderSettings":[],
+  "ResourceOrderSettings":[
+    {"name":"snd_battle_theme","order":1,"path":"sounds/snd_battle_theme/snd_battle_theme.yy",},
+  ],
+}

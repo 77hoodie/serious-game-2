@@ -1,0 +1,1 @@
+message = "Fim do prototipo vertical.\n\nO fluxo basico esta pronto:\n1. Explorar a sala\n2. Resolver puzzle com dicas\n3. Abrir porta\n4. Combater vilao com pergunta conceitual\n5. Finalizar sem punicao pesada\n\nProximo passo: duplicar essa estrutura para derivada parcial, gradiente e Hessiana.";
