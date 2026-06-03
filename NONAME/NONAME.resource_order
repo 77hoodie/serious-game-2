@@ -1,11 +1,12 @@
 {
   "FolderOrderSettings":[],
   "ResourceOrderSettings":[
-    {"name":"obj_title_controller","order":1,"path":"objects/obj_title_controller/obj_title_controller.yy",},
     {"name":"obj_difficulty_controller","order":2,"path":"objects/obj_difficulty_controller/obj_difficulty_controller.yy",},
-    {"name":"rm_title","order":1,"path":"rooms/rm_title/rm_title.yy",},
+    {"name":"obj_title_controller","order":1,"path":"objects/obj_title_controller/obj_title_controller.yy",},
     {"name":"rm_difficulty","order":2,"path":"rooms/rm_difficulty/rm_difficulty.yy",},
+    {"name":"rm_title","order":1,"path":"rooms/rm_title/rm_title.yy",},
     {"name":"snd_battle_theme","order":1,"path":"sounds/snd_battle_theme/snd_battle_theme.yy",},
+    {"name":"snd_menu_theme","order":11,"path":"sounds/snd_menu_theme/snd_menu_theme.yy",},
     {"name":"sprite_player_battle","order":6,"path":"sprites/sprite_player_battle/sprite_player_battle.yy",},
     {"name":"sprite_player_down","order":2,"path":"sprites/sprite_player_down/sprite_player_down.yy",},
     {"name":"sprite_player_left","order":4,"path":"sprites/sprite_player_left/sprite_player_left.yy",},

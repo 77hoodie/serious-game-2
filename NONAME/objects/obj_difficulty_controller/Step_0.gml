@@ -23,5 +23,6 @@ if (keyboard_check_pressed(vk_enter)) {
     global.dialogue_text = "";
     global.dialogue_timer = 0;
 
-    room_goto(rm_lab_01);
+    audio_stop_sound(global.menu_music);
+	room_goto(rm_lab_01);
 }
