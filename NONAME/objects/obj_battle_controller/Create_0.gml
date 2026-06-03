@@ -5,6 +5,9 @@ if (!variable_global_exists("difficulty_mode")) global.difficulty_mode = "learni
 if (!variable_global_exists("hard_mode")) global.hard_mode = false;
 if (!variable_global_exists("dialogue_text")) global.dialogue_text = "";
 if (!variable_global_exists("dialogue_timer")) global.dialogue_timer = -1;
+if (!variable_global_exists("notebook_pages")) global.notebook_pages = [];
+if (!variable_global_exists("notebook_monitor_sem_rosto")) global.notebook_monitor_sem_rosto = false;
+if (!variable_global_exists("last_room_before_battle")) global.last_room_before_battle = rm_lab_01;
 
 if (!variable_global_exists("battle_music")) global.battle_music = noone;
 if (global.battle_music == noone) {
@@ -27,15 +30,18 @@ player_battle_x = 260;
 player_battle_y = 560;
 
 // Configuracao por dificuldade.
+// O modo dificil causa mais dano, mas agora usa uma faixa aleatoria para nao ficar injusto.
 if (global.hard_mode) {
-    enemy_start_hp = 34;
-    enemy_damage = 8;
-    player_attack_damage = 6;
+    enemy_start_hp = 30;
+    enemy_damage_min = 5;
+    enemy_damage_max = 9;
+    player_attack_damage = 7;
     mode_label = "Modo Dificil";
     review_text = "Eu: Revisao rapida. Uma funcao de duas variaveis recebe um par ordenado. Na hora de calcular f(x,y), os dois valores precisam entrar na expressao.";
 } else {
     enemy_start_hp = 12;
-    enemy_damage = 1;
+    enemy_damage_min = 1;
+    enemy_damage_max = 2;
     player_attack_damage = 8;
     mode_label = "Modo Aprendizado";
     review_text = "Eu: Vou revisar com calma. A funcao recebe dois valores, x e y. Para calcular f(1,2), eu substituo x por 1, y por 2, e so depois faco as contas.";
@@ -187,6 +193,11 @@ action_desc_hard = [
     "Abrir a mochila. Por enquanto, ela esta vazia."
 ];
 action_desc = global.hard_mode ? action_desc_hard : action_desc_learning;
+
+
+// Pagina de caderno liberada ao vencer esta batalha.
+notebook_page_title = "Funcoes de varias variaveis";
+notebook_page_body = "Uma funcao de varias variaveis recebe mais de uma entrada. Nesta fase usamos f(x,y), em que x e y formam um par ordenado. Para calcular um valor da funcao, substitua cada variavel pelo valor correspondente e resolva a expressao. Exemplo: se f(x,y) = x^2 + y^2, entao f(1,2) = 1^2 + 2^2 = 5.";
 
 // Limpa textos globais da exploracao ao entrar na batalha.
 global.dialogue_text = "";

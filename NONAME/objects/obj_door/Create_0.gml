@@ -3,6 +3,7 @@ interact = function() {
         global.input_mode = "none";
         global.dialogue_text = "Voce atravessou a porta. Um vilao apareceu!";
         global.dialogue_timer = 60;
+        global.last_room_before_battle = room;
         room_goto(rm_battle_01);
     } else {
         global.dialogue_text = "Porta trancada. Resolva o quadro primeiro. O objetivo e aprender antes de avancar.";

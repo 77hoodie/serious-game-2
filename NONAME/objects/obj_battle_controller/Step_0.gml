@@ -126,7 +126,16 @@ else if (state == "player_message") {
     if (confirm_pressed) {
         if (pending_state == "victory") {
             state = "victory";
-            battle_message = "Monitor Sem Rosto: Voce usou os dois valores. Pode passar.\n\nA primeira batalha terminou.";
+
+            if (!global.notebook_monitor_sem_rosto) {
+                array_push(global.notebook_pages, {
+                    title: notebook_page_title,
+                    body: notebook_page_body
+                });
+                global.notebook_monitor_sem_rosto = true;
+            }
+
+            battle_message = "Monitor Sem Rosto: Voce usou os dois valores. Pode passar.\n\nUma pagina foi adicionada ao seu caderno: Funcoes de varias variaveis.";
             message_footer = "ENTER para continuar";
             message_is_dialogue = true;
         } else if (pending_state == "choose") {
@@ -138,7 +147,7 @@ else if (state == "player_message") {
             state = "enemy_message";
             message_is_dialogue = false;
 
-            var dmg = enemy_damage;
+            var dmg = irandom_range(enemy_damage_min, enemy_damage_max);
             player_hp -= dmg;
             if (player_hp < 0) player_hp = 0;
             global.player_hp = player_hp;
@@ -151,8 +160,8 @@ else if (state == "player_message") {
 
             if (player_hp <= 0) {
                 state = "defeat";
-                battle_message = "Voce ficou sem HP.\n\nPressione ENTER para tentar a batalha novamente.";
-                message_footer = "ENTER para reiniciar";
+                battle_message = "Voce ficou sem HP.\n\nAo acordar, voce volta para a sala anterior. O quadro tera que ser refeito.";
+                message_footer = "ENTER para voltar";
                 message_is_dialogue = false;
             } else {
                 message_footer = "ENTER para voltar ao seu turno";
@@ -180,6 +189,22 @@ else if (state == "victory") {
 }
 else if (state == "defeat") {
     if (confirm_pressed) {
-        room_restart();
+        if (global.battle_music != noone) {
+            audio_stop_sound(global.battle_music);
+            global.battle_music = noone;
+        }
+
+        // Morte em batalha: volta para a room anterior e reseta o progresso da fase.
+        global.lab_01_puzzle_solved = false;
+        global.puzzle_attempts = 0;
+        global.input_mode = "none";
+        global.dialogue_text = "";
+        global.dialogue_timer = 0;
+
+        if (variable_global_exists("last_room_before_battle")) {
+            room_goto(global.last_room_before_battle);
+        } else {
+            room_goto(rm_lab_01);
+        }
     }
 }

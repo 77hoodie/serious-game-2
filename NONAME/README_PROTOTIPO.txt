@@ -167,3 +167,14 @@ Atualizacao de combate:
 - No Modo Aprendizado, a opcao Dica prepara uma pergunta e da uma orientacao clara antes do proximo ataque.
 - No Modo Dificil, dicas seguem indisponiveis e o inimigo tem mais HP/dano.
 - O quadro da primeira sala agora exibe anotacoes uteis junto da questao.
+
+
+## Atualizacao - sistema de batalha, caderno e morte
+
+- A batalha 01 agora usa `sprite_battle_room_01` como fundo visual.
+- No Modo Dificil, o dano do Monitor Sem Rosto varia aleatoriamente entre 5 e 9.
+- No Modo Aprendizado, o dano do Monitor varia entre 1 e 2.
+- Ao vencer o Monitor Sem Rosto, o jogador recebe uma pagina no caderno sobre funcoes de varias variaveis.
+- As paginas do caderno ficam salvas em `global.notebook_pages`.
+- A pagina do Monitor usa a flag `global.notebook_monitor_sem_rosto` para evitar duplicacao.
+- Ao morrer em batalha, o jogador volta para a room anterior a batalha e precisa refazer o quadro da fase.

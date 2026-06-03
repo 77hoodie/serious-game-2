@@ -1,8 +1,13 @@
 // Desenho padronizado da batalha.
 
-// Fundo temporario. Quando a room de batalha tiver imagem propria, ela pode ser desenhada antes desta HUD.
-draw_set_color(make_color_rgb(16, 18, 26));
+// Fundo da sala de batalha. A imagem e visual; personagens e HUD sao desenhados por cima.
+draw_sprite_stretched(sprite_battle_room_01, 0, 0, 0, room_width, room_height);
+
+// Leve escurecimento para manter a HUD legivel sem esconder a arte.
+draw_set_alpha(0.18);
+draw_set_color(c_black);
 draw_rectangle(0, 0, room_width, room_height, false);
+draw_set_alpha(1);
 
 // Faixa superior.
 draw_set_alpha(0.92);
