@@ -13,9 +13,9 @@ if (global.input_mode == "puzzle_lab_01") {
         } else {
             global.puzzle_attempts += 1;
             if (global.puzzle_attempts == 1) {
-                global.dialogue_text = "Dica 1: substitua x por 1 e y por 2. Nao precisa mudar a formula inteira.";
+                global.dialogue_text = "QUADRO - Funcoes de varias variaveis\n\nAnotacoes:\n- Em f(1,2), x vale 1 e y vale 2.\n- Depois da substituicao, calcule as potencias.\n\nDica: substitua x por 1 e y por 2.\n\nf(x,y) = x^2 + y^2\nQuanto vale f(1,2)?";
             } else if (global.puzzle_attempts == 2) {
-                global.dialogue_text = "Dica 2: f(1,2) = 1^2 + 2^2. Primeiro calcule as potencias.";
+                global.dialogue_text = "QUADRO - Funcoes de varias variaveis\n\nAnotacoes:\n- f(1,2) = 1^2 + 2^2.\n- 1^2 vale 1.\n- 2^2 vale 4.\n\nAgora falta somar os resultados.";
             } else {
                 global.dialogue_text = "Tutor: 1^2 = 1 e 2^2 = 4. Somando, 1 + 4 = 5. Aperte 2 para confirmar.";
             }

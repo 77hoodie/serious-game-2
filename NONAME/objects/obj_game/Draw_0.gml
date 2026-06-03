@@ -64,13 +64,13 @@ if (global.dialogue_text != "") {
         draw_set_halign(fa_left);
         draw_set_valign(fa_top);
         draw_set_color(c_white);
-        draw_text_transformed(panel_x1 + 34, panel_y1 + 26, "Quadro", 1.25, 1.25, 0);
+        draw_text_transformed(panel_x1 + 34, panel_y1 + 26, "Quadro da sala", 1.25, 1.25, 0);
 
         draw_set_alpha(0.78);
         draw_line(panel_x1 + 34, panel_y1 + 66, panel_x2 - 34, panel_y1 + 66);
         draw_set_alpha(1);
 
-        draw_text_ext(panel_x1 + 34, panel_y1 + 92, global.dialogue_text, 30, panel_x2 - panel_x1 - 68);
+        draw_text_ext(panel_x1 + 34, panel_y1 + 92, global.dialogue_text, 26, panel_x2 - panel_x1 - 68);
 
         draw_set_halign(fa_right);
         draw_set_valign(fa_bottom);

@@ -4,7 +4,7 @@ Controles:
 - WASD: mover o jogador na sala
 - E: interagir com painel, tutor ou porta
 - 1/2/3: responder alternativas no painel e no combate
-- H: alternar modo aprendizado/dificil
+- H: atalho antigo de debug, nao usado como selecao principal de dificuldade
 - ENTER: finalizar tela final
 - ESC: sair do painel
 
@@ -12,8 +12,8 @@ Fluxo implementado:
 1. rm_lab_01: sala com jogador como bola vermelha, tutor roxo, painel azul e porta.
 2. O painel ensina f(x,y) = x^2 + y^2 e usa dicas progressivas.
 3. A porta abre quando o jogador acerta f(1,2) = 5.
-4. rm_battle_01: combate RPG por turnos contra Dr. Dominio.
-5. Errar nao pune no modo aprendizado; no modo dificil, o erro causa dano leve.
+4. rm_battle_01: combate RPG por turnos contra o Monitor Sem Rosto.
+5. O comportamento da batalha muda conforme a dificuldade escolhida no menu.
 6. rm_end: tela final do prototipo.
 
 Todos os sprites sao placeholders desenhados por codigo nos eventos Draw.
@@ -107,3 +107,63 @@ FIX MAPA DA SALA
 - O mapa da sala agora e desenhado pelo obj_room_background com draw_sprite_stretched.
 - A Background Layer da rm_lab_01 foi desativada para evitar que cubra o mapa em algumas versoes do GameMaker.
 - Se precisar ajustar ordem visual, altere depth no Create do obj_room_background.
+
+## Atualizacao: batalha padronizada com Monitor Sem Rosto
+
+A primeira batalha agora usa o Monitor Sem Rosto como inimigo inicial.
+
+Sprites usadas:
+- `sprite_msr_battle`: pose do Monitor Sem Rosto na batalha;
+- `sprite_msr_dialogue`: retrato do Monitor Sem Rosto em dialogos;
+- `sprite_player_battle`: pose do jogador na batalha;
+- `sprite_player_dialogue`: retrato do jogador em dialogos.
+
+Fluxo atual da batalha:
+1. Ao entrar na room de batalha, acontece um dialogo curto com o Monitor Sem Rosto.
+2. Depois do dialogo, o combate entra no menu de acoes.
+3. O jogador escolhe uma acao por turno.
+4. Depois da acao do jogador, o turno passa para o inimigo.
+5. O combate volta ao jogador se nenhum personagem for derrotado.
+
+Acoes atuais:
+- Atacar: abre uma pergunta matematica e causa dano se a resposta estiver correta.
+- Revisar: mostra uma revisao do conceito da sala.
+- Dica: mostra uma pista direta no Modo Aprendizado; fica indisponivel no Modo Dificil.
+- Item: abre a mochila, mas ainda nao ha itens nesta primeira batalha.
+
+## Atualizacao: regras de batalha por dificuldade
+
+Modo Aprendizado:
+- inimigo com menos HP;
+- dano inimigo reduzido;
+- perguntas mais diretas;
+- dicas mais claras;
+- resposta errada mostra uma explicacao adicional;
+- a acao Dica fica disponivel.
+
+Modo Dificil:
+- inimigo com mais HP;
+- dano inimigo maior;
+- perguntas mais longas ou com mais termos;
+- a acao Dica fica indisponivel;
+- a acao Revisar mostra apenas uma revisao breve.
+
+As perguntas agora sao sorteadas no inicio da batalha a partir de dois bancos separados:
+- `question_bank_learning`
+- `question_bank_hard`
+
+Esses bancos ficam em `objects/obj_battle_controller/Create_0.gml` e podem ser expandidos com novas perguntas futuramente.
+
+A interface tambem foi ajustada:
+- dialogos reais da batalha escurecem o fundo;
+- falas do Monitor Sem Rosto usam `sprite_msr_dialogue` apenas em dialogos;
+- acoes do inimigo nao exibem retrato de dialogo;
+- mensagens de acao continuam aparecendo na caixa inferior sem retrato.
+
+
+Atualizacao de combate:
+- O Monitor Sem Rosto usa origem baixo-central para aparecer corretamente na batalha.
+- As perguntas sao sorteadas sempre que o jogador usa Atacar.
+- No Modo Aprendizado, a opcao Dica prepara uma pergunta e da uma orientacao clara antes do proximo ataque.
+- No Modo Dificil, dicas seguem indisponiveis e o inimigo tem mais HP/dano.
+- O quadro da primeira sala agora exibe anotacoes uteis junto da questao.
