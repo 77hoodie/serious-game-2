@@ -57,3 +57,10 @@ Objetos adicionados:
 - obj_difficulty_controller
 
 A dificuldade escolhida fica salva em global.difficulty_mode e global.hard_mode.
+
+Atualizacao narrativa e HUD:
+- Apos escolher a dificuldade, o jogo passa por uma tela de historia em primeira pessoa.
+- ENTER avanca a historia e ESC pula a introducao.
+- Ao entrar na primeira sala, o tutor inicia uma conversa automaticamente antes do jogador poder se mover.
+- O painel da sala passou a ser tratado como quadro.
+- A dificuldade escolhida no menu continua sendo preservada para o combate.

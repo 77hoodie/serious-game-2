@@ -18,11 +18,14 @@ if (keyboard_check_pressed(vk_enter)) {
     }
 
     global.lab_01_puzzle_solved = false;
+    global.lab_01_intro_done = false;
     global.input_mode = "none";
     global.puzzle_attempts = 0;
     global.dialogue_text = "";
     global.dialogue_timer = 0;
 
-    audio_stop_sound(global.menu_music);
-	room_goto(rm_lab_01);
+    if (variable_global_exists("menu_music")) {
+        audio_stop_sound(global.menu_music);
+    }
+    room_goto(rm_story);
 }

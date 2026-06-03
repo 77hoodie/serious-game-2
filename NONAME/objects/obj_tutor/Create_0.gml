@@ -47,6 +47,6 @@ set_tutor_facing_player = function() {
 interact = function() {
     set_tutor_facing_player();
 
-    global.dialogue_text = "Tutor: Neste prototipo, o erro nao reinicia a sala. Ele gera pistas.\n\nConceito da sala: uma funcao de varias variaveis recebe pares como (x,y) e devolve uma saida z = f(x,y).";
+    global.dialogue_text = "Tutor: O quadro esta usando uma funcao de varias variaveis. Ela recebe um par, como (x,y), e devolve um valor.\n\nSe voce errar, ele deve mostrar pistas antes de deixar voce tentar de novo.";
     global.dialogue_timer = -1;
 };

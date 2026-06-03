@@ -1,8 +1,8 @@
-// Placeholder: painel interativo azul.
-draw_set_color(make_color_rgb(30, 105, 230));
+// Placeholder: quadro interativo.
+draw_set_color(make_color_rgb(36, 92, 72));
 draw_roundrect(x - 58, y - 38, x + 58, y + 38, false);
 draw_set_color(c_white);
-draw_text(x - 48, y - 8, "PAINEL");
+draw_text(x - 48, y - 8, "QUADRO");
 
 if (!global.lab_01_puzzle_solved) {
     draw_set_color(c_yellow);
