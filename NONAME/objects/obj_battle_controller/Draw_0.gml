@@ -6,7 +6,7 @@ draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 draw_set_color(c_white);
 draw_text(40, 28, "COMBATE RPG - Sala 1: Funcoes de varias variaveis");
-draw_text(40, 56, "H alterna modo aprendizado/dificil. Modo atual: " + (global.hard_mode ? "DIFICIL" : "APRENDIZADO"));
+draw_text(40, 56, "Modo atual: " + (global.hard_mode ? "DIFICIL" : "APRENDIZADO"));
 
 // Jogador em pose de batalha.
 // A sprite sprite_player_battle sera usada como padrao visual do player em todas as batalhas.

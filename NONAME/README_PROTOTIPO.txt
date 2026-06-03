@@ -37,3 +37,23 @@ Atualizacao de sprites de batalha
 - A sprite sprite_player_battle foi integrada ao controlador de combate.
 - Ela e usada como visual padrao do jogador em todas as batalhas.
 - As sprites direcionais continuam sendo usadas na exploracao.
+
+
+ATUALIZACAO - MENU INICIAL
+-------------------------
+O prototipo agora inicia em rm_title, com a tela de titulo Midnight School.
+Pressione ENTER para ir ao menu de dificuldade.
+
+Dificuldades:
+- Modo Aprendizado: recomendado para aprender ou revisar os conceitos. Erros geram dicas e explicacoes progressivas.
+- Modo Dificil: recomendado para jogadores com mais familiaridade. Erros em combate podem causar perda de HP.
+
+Rooms adicionadas:
+- rm_title
+- rm_difficulty
+
+Objetos adicionados:
+- obj_title_controller
+- obj_difficulty_controller
+
+A dificuldade escolhida fica salva em global.difficulty_mode e global.hard_mode.

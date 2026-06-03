@@ -53,7 +53,10 @@ else if (state == "question") {
 }
 else if (state == "victory") {
     if (keyboard_check_pressed(vk_enter)) {
-		audio_stop_sound(global.battle_music);
+		if (global.battle_music != noone) {
+            audio_stop_sound(global.battle_music);
+            global.battle_music = noone;
+        }
         room_goto(rm_end);
     }
 }
