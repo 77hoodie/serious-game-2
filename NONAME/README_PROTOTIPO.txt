@@ -20,3 +20,15 @@ Todos os sprites sao placeholders desenhados por codigo nos eventos Draw.
 
 
 Correção 1: adicionados campos inheritedItemId nas instâncias das rooms para compatibilidade com o leitor JSON do GameMaker 2024.
+
+
+Sprites do jogador integradas
+-----------------------------
+O obj_player agora usa as sprites animadas:
+- sprite_player_down
+- sprite_player_up
+- sprite_player_left
+- sprite_player_right
+
+A escala visual do personagem fica em objects/obj_player/Create_0.gml, na variável player_sprite_scale.
+Se o personagem parecer grande ou pequeno na room, ajuste esse valor.

@@ -3,13 +3,43 @@ if (global.input_mode == "none") {
     var v = keyboard_check(ord("S")) - keyboard_check(ord("W"));
 
     var len = point_distance(0, 0, h, v);
-    if (len > 0) {
+    var moving = (len > 0);
+
+    if (moving) {
         h /= len;
         v /= len;
-    }
 
-    x = clamp(x + h * move_speed, 40, room_width - 40);
-    y = clamp(y + v * move_speed, 140, room_height - 190);
+        // Define a direção visual pela última direção predominante.
+        if (abs(h) > abs(v)) {
+            if (h > 0) {
+                facing = "right";
+                sprite_index = sprite_player_right;
+            } else {
+                facing = "left";
+                sprite_index = sprite_player_left;
+            }
+        } else {
+            if (v > 0) {
+                facing = "down";
+                sprite_index = sprite_player_down;
+            } else {
+                facing = "up";
+                sprite_index = sprite_player_up;
+            }
+        }
+
+        image_xscale = player_sprite_scale;
+        image_yscale = player_sprite_scale;
+        image_speed = 0.18;
+
+        x = clamp(x + h * move_speed, 40, room_width - 40);
+        y = clamp(y + v * move_speed, 140, room_height - 190);
+    } else {
+        image_speed = 0;
+        image_index = 1;
+    }
+} else {
+    image_speed = 0;
 }
 
 if (keyboard_check_pressed(ord("E")) && global.input_mode == "none") {

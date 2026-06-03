@@ -61,7 +61,10 @@
   "resourceType": "GMObject",
   "resourceVersion": "2.0",
   "solid": false,
-  "spriteId": null,
+  "spriteId": {
+    "name": "sprite_player_down",
+    "path": "sprites/sprite_player_down/sprite_player_down.yy"
+  },
   "spriteMaskId": null,
   "visible": true
 }
