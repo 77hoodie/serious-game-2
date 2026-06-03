@@ -3,11 +3,12 @@
 draw_set_halign(fa_center);
 draw_set_valign(fa_middle);
 
-var label_text = global.lab_01_puzzle_solved ? "E - Sair" : "Trancada";
+var solved = (room == rm_lab_02) ? global.lab_02_puzzle_solved : global.lab_01_puzzle_solved;
+var label_text = solved ? "E - Sair" : "Trancada";
 var box_w = 112;
 var box_h = 30;
 
-if (global.lab_01_puzzle_solved) {
+if (solved) {
     draw_set_color(c_lime);
 } else {
     draw_set_color(make_color_rgb(220, 155, 70));

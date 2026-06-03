@@ -21,15 +21,23 @@ collision_top = 24;
 collision_bottom = 4;
 
 map_collision_free = function(_x, _y) {
-    if (room != rm_lab_01) return true;
-    if (!variable_global_exists("lab_01_collision_rects")) return true;
+    var rects = [];
+
+    if (room == rm_lab_01) {
+        if (!variable_global_exists("lab_01_collision_rects")) return true;
+        rects = global.lab_01_collision_rects;
+    } else if (room == rm_lab_02) {
+        if (!variable_global_exists("lab_02_collision_rects")) return true;
+        rects = global.lab_02_collision_rects;
+    } else {
+        return true;
+    }
 
     var left = _x - collision_half_w;
     var right = _x + collision_half_w;
     var top = _y - collision_top;
     var bottom = _y - collision_bottom;
 
-    var rects = global.lab_01_collision_rects;
     var count = array_length(rects);
 
     for (var i = 0; i < count; i += 1) {

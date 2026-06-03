@@ -1,7 +1,7 @@
 // Desenho padronizado da batalha.
 
 // Fundo da sala de batalha. A imagem e visual; personagens e HUD sao desenhados por cima.
-draw_sprite_stretched(sprite_battle_room_01, 0, 0, 0, room_width, room_height);
+draw_sprite_stretched(battle_background_sprite, 0, 0, 0, room_width, room_height);
 
 // Leve escurecimento para manter a HUD legivel sem esconder a arte.
 draw_set_alpha(0.18);
@@ -20,7 +20,7 @@ draw_set_valign(fa_top);
 draw_set_color(c_white);
 draw_text(36, 22, "Midnight School");
 draw_set_alpha(0.72);
-draw_text(36, 50, "Batalha 01 - Funcoes de varias variaveis | Turno " + string(turn_count) + " | " + mode_label);
+draw_text(36, 50, battle_number_label + " - " + battle_concept_label + " | Turno " + string(turn_count) + " | " + mode_label);
 draw_set_alpha(1);
 
 // Personagens em campo.
@@ -91,7 +91,6 @@ draw_set_color(c_white);
 draw_roundrect(box_x1, box_y1, box_x2, box_y2, true);
 
 if (state == "choose") {
-    // Menu de acoes.
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
     draw_set_color(c_white);
@@ -121,7 +120,12 @@ if (state == "choose") {
     draw_set_alpha(0.78);
     draw_line(box_x1 + 270, box_y1 + 34, box_x1 + 270, box_y2 - 34);
     draw_set_alpha(1);
-    draw_text_ext(box_x1 + 302, box_y1 + 62, action_desc[action_index], 26, box_x2 - box_x1 - 350);
+
+    var desc = action_desc[action_index];
+    if (action_index == 3) {
+        desc += "\n\nBarras de cereal: " + string(global.item_cereal_bars);
+    }
+    draw_text_ext(box_x1 + 302, box_y1 + 62, desc, 26, box_x2 - box_x1 - 350);
 
     draw_set_halign(fa_right);
     draw_set_valign(fa_bottom);
@@ -130,7 +134,6 @@ if (state == "choose") {
     draw_set_alpha(1);
 }
 else if (state == "attack_question") {
-    // Pergunta de ataque.
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
     draw_set_color(c_white);
@@ -157,14 +160,14 @@ else {
     var speaker = "";
     var body_text = raw_text;
 
-    var prefix_msr = "Monitor Sem Rosto:";
+    var prefix_enemy = enemy_name + ":";
     var prefix_eu = "Eu:";
     var prefix_tutor = "Tutor:";
 
     if (message_is_dialogue) {
-        if (string_pos(prefix_msr, raw_text) == 1) {
-            speaker = "Monitor Sem Rosto";
-            body_text = string_copy(raw_text, string_length(prefix_msr) + 2, string_length(raw_text));
+        if (string_pos(prefix_enemy, raw_text) == 1) {
+            speaker = enemy_name;
+            body_text = string_copy(raw_text, string_length(prefix_enemy) + 2, string_length(raw_text));
         } else if (string_pos(prefix_eu, raw_text) == 1) {
             speaker = "Eu";
             body_text = string_copy(raw_text, string_length(prefix_eu) + 2, string_length(raw_text));
@@ -181,7 +184,7 @@ else {
         draw_sprite_ext(sprite_player_dialogue, 0, 90, room_height - 498, 0.58, 0.58, 0, c_white, 1);
         text_x = box_x1 + 310;
         text_w = box_x2 - text_x - 35;
-    } else if (speaker == "Monitor Sem Rosto") {
+    } else if (speaker == enemy_name) {
         draw_sprite_ext(enemy_dialogue_sprite, 0, room_width - 350, room_height - 506, 0.58, 0.58, 0, c_white, 1);
         text_x = box_x1 + 30;
         text_w = box_x2 - box_x1 - 378;

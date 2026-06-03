@@ -47,6 +47,10 @@ set_tutor_facing_player = function() {
 interact = function() {
     set_tutor_facing_player();
 
-    global.dialogue_text = "Tutor: O quadro esta usando uma funcao de varias variaveis. Ela recebe um par, como (x,y), e devolve um valor.\n\nSe voce errar, ele deve mostrar pistas antes de deixar voce tentar de novo.";
+    if (room == rm_lab_02) {
+        global.dialogue_text = "Tutor: Derivada parcial e olhar para uma variavel por vez. Se o quadro pedir df/dx, trate y como constante. Se pedir df/dy, trate x como constante.\n\nA sala fica confusa quando voce tenta mudar tudo ao mesmo tempo.";
+    } else {
+        global.dialogue_text = "Tutor: O quadro esta usando uma funcao de varias variaveis. Ela recebe um par, como (x,y), e devolve um valor.\n\nSe voce errar, ele deve mostrar pistas antes de deixar voce tentar de novo.";
+    }
     global.dialogue_timer = -1;
 };

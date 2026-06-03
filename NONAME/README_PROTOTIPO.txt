@@ -178,3 +178,41 @@ Atualizacao de combate:
 - As paginas do caderno ficam salvas em `global.notebook_pages`.
 - A pagina do Monitor usa a flag `global.notebook_monitor_sem_rosto` para evitar duplicacao.
 - Ao morrer em batalha, o jogador volta para a room anterior a batalha e precisa refazer o quadro da fase.
+
+--- Atualizacao: sala 02, Aluna da Janela, menu e caderno ---
+
+Novas rooms:
+- rm_lab_02: segunda sala, com foco em derivadas parciais.
+- rm_battle_02: batalha contra a Aluna da Janela.
+
+Novas sprites usadas:
+- sprite_map_classroom_02: fundo da segunda sala.
+- sprite_battle_room_02: fundo da segunda batalha.
+- sprite_aluna_battle: sprite da Aluna da Janela em batalha.
+- sprite_aluna_dialogue: retrato da Aluna da Janela em dialogo.
+
+Sala 02:
+- O tutor acompanha o jogador e explica que derivada parcial significa olhar para uma variavel por vez.
+- O quadro trabalha df/dx e df/dy.
+- No Modo Aprendizado, a questao do quadro e mais direta.
+- No Modo Dificil, a questao do quadro usa uma funcao com mais termos.
+- A porta leva para a batalha contra a Aluna da Janela.
+
+Batalha 02:
+- A Aluna da Janela usa perguntas sobre derivadas parciais.
+- O banco de perguntas e diferente para Modo Aprendizado e Modo Dificil.
+- As perguntas continuam sendo sorteadas durante a batalha.
+- Ao vencer, o jogador ganha uma pagina no caderno sobre derivadas parciais.
+
+Menu do jogador:
+- Pressione M durante a exploracao para abrir o menu.
+- O menu mostra Itens e Caderno.
+- A aba Itens mostra as barras de cereal.
+- A aba Caderno mostra as paginas liberadas apos batalhas.
+- A/D alterna abas.
+- W/S troca paginas do caderno.
+- M ou ESC fecha o menu.
+
+Itens:
+- Depois da batalha contra o Monitor Sem Rosto, o jogador ganha 2 barras de cereal.
+- Em batalha, a opcao Item permite usar uma barra de cereal para recuperar HP.

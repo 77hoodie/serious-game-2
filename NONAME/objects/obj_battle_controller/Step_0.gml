@@ -35,8 +35,6 @@ else if (state == "choose") {
 
     if (confirm_pressed || keyboard_check_pressed(ord("1")) || keyboard_check_pressed(ord("2")) || keyboard_check_pressed(ord("3")) || keyboard_check_pressed(ord("4"))) {
         if (action_index == 0) {
-            // Cada ataque recebe uma pergunta sorteada. Se uma dica foi pedida antes,
-            // o proximo ataque usa a pergunta da dica para manter coerencia.
             if (!question_locked) {
                 battle_pick_question();
             }
@@ -62,8 +60,6 @@ else if (state == "choose") {
                 message_footer = "ENTER para voltar ao menu";
                 message_is_dialogue = false;
             } else {
-                // A dica prepara a pergunta do proximo ataque. Ela custa o turno,
-                // mas deixa claro o caminho sem entregar a resposta diretamente.
                 battle_pick_question();
                 question_locked = true;
                 pending_state = "enemy_turn";
@@ -74,10 +70,32 @@ else if (state == "choose") {
         }
         else if (action_index == 3) {
             state = "player_message";
-            pending_state = "enemy_turn";
-            battle_message = "Eu: Procurei na mochila, mas ainda nao tenho nenhum item util.";
-            message_footer = "ENTER para passar o turno";
-            message_is_dialogue = true;
+
+            if (global.item_cereal_bars > 0) {
+                if (player_hp >= max_player_hp) {
+                    pending_state = "choose";
+                    battle_message = "Eu: Minha vida ja esta cheia. Melhor guardar a barra de cereal.";
+                    message_footer = "ENTER para voltar ao menu";
+                    message_is_dialogue = true;
+                } else {
+                    var heal = 12;
+                    var before_hp = player_hp;
+                    player_hp = min(max_player_hp, player_hp + heal);
+                    global.player_hp = player_hp;
+                    global.item_cereal_bars -= 1;
+
+                    var healed = player_hp - before_hp;
+                    pending_state = "enemy_turn";
+                    battle_message = "Eu: Comi uma barra de cereal. Recuperei " + string(healed) + " HP.\n\nBarras restantes: " + string(global.item_cereal_bars) + ".";
+                    message_footer = "ENTER para passar o turno";
+                    message_is_dialogue = true;
+                }
+            } else {
+                pending_state = "choose";
+                battle_message = "Eu: Procurei na mochila, mas nao encontrei nenhum item util.";
+                message_footer = "ENTER para voltar ao menu";
+                message_is_dialogue = true;
+            }
         }
     }
 }
@@ -107,7 +125,7 @@ else if (state == "attack_question") {
             enemy_hp -= damage;
             if (enemy_hp < 0) enemy_hp = 0;
 
-            battle_message = question_solution + "\n\nO ataque acertou o Monitor Sem Rosto e causou " + string(damage) + " de dano.";
+            battle_message = question_solution + "\n\nO ataque acertou " + enemy_name + " e causou " + string(damage) + " de dano.";
 
             if (enemy_hp <= 0) {
                 pending_state = "victory";
@@ -115,7 +133,7 @@ else if (state == "attack_question") {
         } else {
             wrong_answers += 1;
             battle_message = "A resposta nao fechou.\n\n" + question_wrong_feedback;
-            if (!global.hard_mode && wrong_answers >= 1) {
+            if (!global.hard_mode && wrong_answers >= 1 && question_hint != "") {
                 battle_message += "\n\nDica: " + question_hint;
             }
         }
@@ -127,15 +145,39 @@ else if (state == "player_message") {
         if (pending_state == "victory") {
             state = "victory";
 
-            if (!global.notebook_monitor_sem_rosto) {
-                array_push(global.notebook_pages, {
-                    title: notebook_page_title,
-                    body: notebook_page_body
-                });
-                global.notebook_monitor_sem_rosto = true;
+            var reward_text = "";
+
+            if (battle_id == "monitor") {
+                if (!global.notebook_monitor_sem_rosto) {
+                    array_push(global.notebook_pages, {
+                        title: notebook_page_title,
+                        body: notebook_page_body
+                    });
+                    global.notebook_monitor_sem_rosto = true;
+                    reward_text += "\n\nUma pagina foi adicionada ao seu caderno: Funcoes de varias variaveis.";
+                }
+
+                if (!global.reward_monitor_items) {
+                    global.item_cereal_bars += 2;
+                    global.reward_monitor_items = true;
+                    reward_text += "\nVoce encontrou 2 barras de cereal.";
+                }
+
+                battle_message = "Monitor Sem Rosto: Voce usou os dois valores. Pode passar." + reward_text;
+            }
+            else if (battle_id == "aluna") {
+                if (!global.notebook_aluna_janela) {
+                    array_push(global.notebook_pages, {
+                        title: notebook_page_title,
+                        body: notebook_page_body
+                    });
+                    global.notebook_aluna_janela = true;
+                    reward_text += "\n\nUma pagina foi adicionada ao seu caderno: Derivadas parciais.";
+                }
+
+                battle_message = "Aluna da Janela: Entendi. Uma coisa por vez." + reward_text;
             }
 
-            battle_message = "Monitor Sem Rosto: Voce usou os dois valores. Pode passar.\n\nUma pagina foi adicionada ao seu caderno: Funcoes de varias variaveis.";
             message_footer = "ENTER para continuar";
             message_is_dialogue = true;
         } else if (pending_state == "choose") {
@@ -152,10 +194,10 @@ else if (state == "player_message") {
             if (player_hp < 0) player_hp = 0;
             global.player_hp = player_hp;
 
-            if (dmg > 0) {
-                battle_message = "O Monitor Sem Rosto avanca em silencio.\n\nVoce perdeu " + string(dmg) + " HP.";
+            if (battle_id == "aluna") {
+                battle_message = "A Aluna da Janela encara o vidro e respira fundo.\n\nVoce perdeu " + string(dmg) + " HP.";
             } else {
-                battle_message = "O Monitor Sem Rosto observa o quadro e espera a sua proxima tentativa.";
+                battle_message = "O Monitor Sem Rosto avanca em silencio.\n\nVoce perdeu " + string(dmg) + " HP.";
             }
 
             if (player_hp <= 0) {
@@ -184,7 +226,8 @@ else if (state == "victory") {
             audio_stop_sound(global.battle_music);
             global.battle_music = noone;
         }
-        room_goto(rm_end);
+
+        room_goto(victory_room);
     }
 }
 else if (state == "defeat") {
@@ -194,17 +237,19 @@ else if (state == "defeat") {
             global.battle_music = noone;
         }
 
-        // Morte em batalha: volta para a room anterior e reseta o progresso da fase.
-        global.lab_01_puzzle_solved = false;
-        global.puzzle_attempts = 0;
+        if (battle_id == "aluna") {
+            global.lab_02_puzzle_solved = false;
+            global.puzzle_attempts_lab_02 = 0;
+            global.lab_02_intro_done = false;
+        } else {
+            global.lab_01_puzzle_solved = false;
+            global.puzzle_attempts = 0;
+            global.lab_01_intro_done = false;
+        }
+
         global.input_mode = "none";
         global.dialogue_text = "";
         global.dialogue_timer = 0;
-
-        if (variable_global_exists("last_room_before_battle")) {
-            room_goto(global.last_room_before_battle);
-        } else {
-            room_goto(rm_lab_01);
-        }
+        room_goto(reset_room);
     }
 }

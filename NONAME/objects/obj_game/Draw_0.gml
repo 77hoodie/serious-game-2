@@ -1,35 +1,40 @@
 // UI geral do prototipo.
 // A HUD da sala aparece durante exploracao.
-// Dialogos e quadro usam uma camada escura por cima da room para destacar a interface.
+// Dialogos, menu e quadro usam uma camada escura por cima da room.
 
-if (room != rm_lab_01) {
+if (room != rm_lab_01 && room != rm_lab_02) {
     exit;
 }
+
+var is_lab_02 = (room == rm_lab_02);
+var solved = is_lab_02 ? global.lab_02_puzzle_solved : global.lab_01_puzzle_solved;
+var room_title = is_lab_02 ? "Sala das Variacoes" : "Sala inicial";
+var board_label = is_lab_02 ? "Quadro pendente: derivada parcial." : "Quadro pendente: funcao de varias variaveis.";
 
 draw_set_font(-1);
 draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 
-// HUD simples da sala. Quando houver dialogo/quadro, ela fica escurecida junto com o fundo.
+// HUD simples da sala. Quando houver dialogo/quadro/menu, ela fica escurecida junto com o fundo.
 draw_set_color(c_white);
-draw_text(24, 18, "Midnight School - Prototipo");
-draw_text(24, 42, "Objetivo: converse com o tutor, resolva o quadro, abra a porta e enfrente o inimigo.");
-draw_text(24, 66, "Controles: WASD move | E interage | ENTER fecha/avanca dialogos");
+draw_text(24, 18, "Midnight School - " + room_title);
+draw_text(24, 42, "Objetivo: fale com o tutor, resolva o quadro e avance pela porta.");
+draw_text(24, 66, "Controles: WASD move | E interage | M menu | ENTER fecha/avanca dialogos");
 draw_text(24, 90, "Modo atual: " + (global.hard_mode ? "DIFICIL" : "APRENDIZADO"));
 
-if (global.lab_01_puzzle_solved) {
+if (solved) {
     draw_set_color(c_lime);
     draw_text(24, 118, "Quadro resolvido: a porta esta aberta.");
 } else {
     draw_set_color(c_yellow);
-    draw_text(24, 118, "Quadro pendente: use E no quadro quando terminar a conversa.");
+    draw_text(24, 118, board_label);
 }
 
 // Visualizacao opcional dos retangulos de colisao.
 if (variable_global_exists("debug_collisions") && global.debug_collisions) {
     draw_set_alpha(0.28);
     draw_set_color(c_red);
-    var rects = global.lab_01_collision_rects;
+    var rects = is_lab_02 ? global.lab_02_collision_rects : global.lab_01_collision_rects;
     for (var i = 0; i < array_length(rects); i += 1) {
         var r = rects[i];
         draw_rectangle(r[0], r[1], r[2], r[3], false);
@@ -37,17 +42,96 @@ if (variable_global_exists("debug_collisions") && global.debug_collisions) {
     draw_set_alpha(1);
 }
 
+// Menu do jogador.
+if (global.input_mode == "player_menu") {
+    draw_set_alpha(0.86);
+    draw_set_color(c_black);
+    draw_rectangle(0, 0, room_width, room_height, false);
+    draw_set_alpha(1);
+
+    var mx1 = 150;
+    var my1 = 86;
+    var mx2 = room_width - 150;
+    var my2 = room_height - 86;
+
+    draw_set_alpha(0.97);
+    draw_set_color(c_black);
+    draw_roundrect(mx1, my1, mx2, my2, false);
+    draw_set_alpha(1);
+    draw_set_color(c_white);
+    draw_roundrect(mx1, my1, mx2, my2, true);
+
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    draw_text_transformed(mx1 + 36, my1 + 28, "Menu", 1.35, 1.35, 0);
+
+    var tab_items = (global.menu_tab == 0);
+    draw_set_color(tab_items ? c_black : c_white);
+    if (tab_items) {
+        draw_set_color(c_white);
+        draw_rectangle(mx1 + 36, my1 + 76, mx1 + 176, my1 + 110, false);
+        draw_set_color(c_black);
+    }
+    draw_text(mx1 + 54, my1 + 84, "Itens");
+
+    if (!tab_items) {
+        draw_set_color(c_white);
+        draw_rectangle(mx1 + 190, my1 + 76, mx1 + 390, my1 + 110, false);
+        draw_set_color(c_black);
+    } else {
+        draw_set_color(c_white);
+    }
+    draw_text(mx1 + 210, my1 + 84, "Caderno");
+
+    draw_set_color(c_white);
+    draw_set_alpha(0.55);
+    draw_line(mx1 + 36, my1 + 128, mx2 - 36, my1 + 128);
+    draw_set_alpha(1);
+
+    if (tab_items) {
+        draw_text_transformed(mx1 + 44, my1 + 156, "Mochila", 1.14, 1.14, 0);
+        draw_text(mx1 + 58, my1 + 208, "Barras de cereal: " + string(global.item_cereal_bars));
+        draw_set_alpha(0.72);
+        draw_text_ext(mx1 + 58, my1 + 248, "As barras de cereal podem ser usadas em batalha para recuperar HP. Por enquanto, elas sao o item basico do jogo.", 26, mx2 - mx1 - 116);
+        draw_set_alpha(1);
+    } else {
+        draw_text_transformed(mx1 + 44, my1 + 156, "Caderno de anotacoes", 1.14, 1.14, 0);
+        var page_count = array_length(global.notebook_pages);
+        if (page_count <= 0) {
+            draw_set_alpha(0.72);
+            draw_text_ext(mx1 + 58, my1 + 208, "Ainda nao ha paginas no caderno. Elas aparecem depois das batalhas vencidas.", 26, mx2 - mx1 - 116);
+            draw_set_alpha(1);
+        } else {
+            global.notebook_page_index = clamp(global.notebook_page_index, 0, page_count - 1);
+            var page = global.notebook_pages[global.notebook_page_index];
+            draw_text(mx1 + 58, my1 + 204, "Pagina " + string(global.notebook_page_index + 1) + "/" + string(page_count));
+            draw_text_transformed(mx1 + 58, my1 + 238, page.title, 1.08, 1.08, 0);
+            draw_set_alpha(0.9);
+            draw_text_ext(mx1 + 58, my1 + 288, page.body, 27, mx2 - mx1 - 116);
+            draw_set_alpha(1);
+        }
+    }
+
+    draw_set_halign(fa_right);
+    draw_set_valign(fa_bottom);
+    draw_set_alpha(0.68);
+    draw_text(mx2 - 28, my2 - 22, "A/D alterna abas | W/S troca pagina | M ou ESC fecha");
+    draw_set_alpha(1);
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    exit;
+}
+
 if (global.dialogue_text != "") {
     // Escurece a room inteira antes de desenhar dialogos/quadro.
-    // Isso evita que objetos da sala, como a porta, aparecam por cima dos retratos.
-    var overlay_alpha = (global.input_mode == "puzzle_lab_01") ? 0.88 : 0.78;
+    var overlay_alpha = (global.input_mode == "puzzle_lab_01" || global.input_mode == "puzzle_lab_02") ? 0.88 : 0.78;
     draw_set_alpha(overlay_alpha);
     draw_set_color(c_black);
     draw_rectangle(0, 0, room_width, room_height, false);
     draw_set_alpha(1);
 
     // O quadro usa uma caixa propria, centralizada, para nao cortar alternativas.
-    if (global.input_mode == "puzzle_lab_01") {
+    if (global.input_mode == "puzzle_lab_01" || global.input_mode == "puzzle_lab_02") {
         var panel_x1 = 150;
         var panel_y1 = 90;
         var panel_x2 = room_width - 150;
@@ -64,7 +148,7 @@ if (global.dialogue_text != "") {
         draw_set_halign(fa_left);
         draw_set_valign(fa_top);
         draw_set_color(c_white);
-        draw_text_transformed(panel_x1 + 34, panel_y1 + 26, "Quadro da sala", 1.25, 1.25, 0);
+        draw_text_transformed(panel_x1 + 34, panel_y1 + 26, is_lab_02 ? "Quadro da sala - Derivadas parciais" : "Quadro da sala", 1.25, 1.25, 0);
 
         draw_set_alpha(0.78);
         draw_line(panel_x1 + 34, panel_y1 + 66, panel_x2 - 34, panel_y1 + 66);
@@ -101,8 +185,6 @@ if (global.dialogue_text != "") {
         var text_x = box_x1 + 30;
         var text_w = box_x2 - box_x1 - 60;
 
-        // Retratos ficam fora da box, sobre o fundo escurecido.
-        // Assim eles nao competem visualmente com os objetos da room.
         if (speaker == "Eu") {
             draw_sprite_ext(sprite_player_dialogue, 0, 90, room_height - 498, 0.58, 0.58, 0, c_white, 1);
             text_x = box_x1 + 310;
@@ -122,18 +204,15 @@ if (global.dialogue_text != "") {
         draw_roundrect(box_x1, box_y1, box_x2, box_y2, true);
 
         if (speaker != "") {
-            draw_set_color(c_white);
             draw_text_transformed(text_x, box_y1 + 18, speaker, 1.08, 1.08, 0);
             draw_set_alpha(0.55);
             draw_line(text_x, box_y1 + 48, text_x + min(text_w, 300), box_y1 + 48);
             draw_set_alpha(1);
             draw_text_ext(text_x, box_y1 + 64, body_text, 24, text_w);
         } else {
-            draw_set_color(c_white);
             draw_text_ext(text_x, box_y1 + 24, body_text, 24, text_w);
         }
 
-        // Qualquer dialogo fora do quadro pode ser fechado ou avancado com ENTER.
         draw_set_halign(fa_right);
         draw_set_valign(fa_bottom);
         draw_set_alpha(0.68);

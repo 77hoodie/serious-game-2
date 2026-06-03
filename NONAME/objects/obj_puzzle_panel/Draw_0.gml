@@ -3,11 +3,12 @@
 draw_set_halign(fa_center);
 draw_set_valign(fa_middle);
 
-var label_text = global.lab_01_puzzle_solved ? "Resolvido" : "E - Quadro";
+var solved = (room == rm_lab_02) ? global.lab_02_puzzle_solved : global.lab_01_puzzle_solved;
+var label_text = solved ? "Resolvido" : "E - Quadro";
 var box_w = 120;
 var box_h = 30;
 
-if (global.lab_01_puzzle_solved) {
+if (solved) {
     draw_set_color(c_lime);
 } else {
     draw_set_color(c_yellow);
