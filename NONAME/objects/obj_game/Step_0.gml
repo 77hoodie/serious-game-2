@@ -1,5 +1,15 @@
 // Atualiza caixa de dialogo e cutscenes simples.
+// ENTER fecha dialogos livres e avanca cutscenes.
 // A dificuldade e definida no menu inicial.
+
+// Dialogos livres: mensagens do tutor, porta, acertos e avisos ficam paradas
+// ate o jogador apertar ENTER. Isso evita andar pela room com o fundo escuro aberto.
+if (global.input_mode == "none" && global.dialogue_text != "") {
+    if (keyboard_check_pressed(vk_enter) || keyboard_check_pressed(vk_space)) {
+        global.dialogue_text = "";
+        global.dialogue_timer = 0;
+    }
+}
 
 if (global.input_mode == "lab_intro") {
     if (keyboard_check_pressed(vk_enter) || keyboard_check_pressed(vk_space)) {

@@ -64,3 +64,31 @@ Atualizacao narrativa e HUD:
 - Ao entrar na primeira sala, o tutor inicia uma conversa automaticamente antes do jogador poder se mover.
 - O painel da sala passou a ser tratado como quadro.
 - A dificuldade escolhida no menu continua sendo preservada para o combate.
+
+ATUALIZACAO - DIALOGOS E HUD
+- A caixa de dialogo da sala agora usa retratos para as falas do protagonista e do tutor.
+- Falas que começam com "Eu:" exibem sprite_player_dialogue.
+- Falas que começam com "Tutor:" exibem sprite_tutor_dialogue.
+- O quadro agora usa uma caixa propria maior, centralizada, para mostrar pergunta e alternativas sem cortar a parte inferior da tela.
+- A caixa de combate tambem foi padronizada para manter comandos e texto dentro da area visivel.
+
+IDEIA INICIAL DE MAPA
+- Entrada / sala inicial: primeiro contato com o tutor e funcoes de varias variaveis.
+- Corredor principal: area de ligacao entre salas.
+- Sala de derivadas parciais: puzzles que mudam apenas x ou apenas y.
+- Cidade inclinada ou patio distorcido: area do gradiente.
+- Casa dos pontos criticos: area de maximos, minimos e ponto de sela.
+- Arquivo / sala final: revisao integrada dos quatro conceitos.
+
+Atualizacao de HUD - overlay de dialogos e quadro
+-------------------------------------------------
+- Dialogos da sala agora escurecem a room antes de desenhar os retratos e a caixa de texto.
+- O quadro tambem escurece o fundo para funcionar como uma tela de interacao propria.
+- O controlador global obj_game usa depth negativo para garantir que a UI fique por cima dos objetos da sala.
+- A interface de batalha continua sendo desenhada pelo obj_battle_controller.
+
+
+Atualizacao de interface:
+- Dialogos e quadro pausam o movimento do player enquanto estao abertos.
+- ENTER fecha dialogos livres e tambem sai da interface do quadro.
+- ESC continua funcionando para sair do quadro.

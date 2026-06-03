@@ -1,5 +1,7 @@
 // Controlador global do prototipo.
 // Mantem estados simples de tutorial, puzzle e UI.
+// Profundidade negativa para a UI sempre desenhar por cima dos objetos da sala.
+depth = -100000;
 
 if (!variable_global_exists("difficulty_mode")) global.difficulty_mode = "learning";
 if (!variable_global_exists("hard_mode")) global.hard_mode = false;

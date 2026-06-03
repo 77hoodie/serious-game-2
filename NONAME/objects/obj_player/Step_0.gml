@@ -1,4 +1,4 @@
-if (global.input_mode == "none") {
+if (global.input_mode == "none" && global.dialogue_text == "") {
     var h = keyboard_check(ord("D")) - keyboard_check(ord("A"));
     var v = keyboard_check(ord("S")) - keyboard_check(ord("W"));
 
@@ -42,7 +42,7 @@ if (global.input_mode == "none") {
     image_speed = 0;
 }
 
-if (keyboard_check_pressed(ord("E")) && global.input_mode == "none") {
+if (keyboard_check_pressed(ord("E")) && global.input_mode == "none" && global.dialogue_text == "") {
     var nearest = noone;
     var best_dist = interact_range;
 
@@ -67,7 +67,7 @@ if (keyboard_check_pressed(ord("E")) && global.input_mode == "none") {
     if (nearest != noone) {
         nearest.interact();
     } else {
-        global.dialogue_text = "Nada para interagir aqui. Chegue perto do painel, tutor ou porta e aperte E.";
+        global.dialogue_text = "Nada para interagir aqui. Chegue perto do quadro, tutor ou porta e aperte E.";
         global.dialogue_timer = 140;
     }
 }

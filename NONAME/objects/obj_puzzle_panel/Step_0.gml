@@ -24,9 +24,9 @@ if (global.input_mode == "puzzle_lab_01") {
         }
     }
 
-    if (keyboard_check_pressed(vk_escape)) {
+    if (keyboard_check_pressed(vk_escape) || keyboard_check_pressed(vk_enter)) {
         global.input_mode = "none";
-        global.dialogue_text = "Voce saiu do painel. Pode tentar de novo com E.";
-        global.dialogue_timer = 140;
+        global.dialogue_text = "";
+        global.dialogue_timer = 0;
     }
 }
