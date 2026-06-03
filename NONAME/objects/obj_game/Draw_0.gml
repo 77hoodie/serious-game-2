@@ -25,6 +25,18 @@ if (global.lab_01_puzzle_solved) {
     draw_text(24, 118, "Quadro pendente: use E no quadro quando terminar a conversa.");
 }
 
+// Visualizacao opcional dos retangulos de colisao.
+if (variable_global_exists("debug_collisions") && global.debug_collisions) {
+    draw_set_alpha(0.28);
+    draw_set_color(c_red);
+    var rects = global.lab_01_collision_rects;
+    for (var i = 0; i < array_length(rects); i += 1) {
+        var r = rects[i];
+        draw_rectangle(r[0], r[1], r[2], r[3], false);
+    }
+    draw_set_alpha(1);
+}
+
 if (global.dialogue_text != "") {
     // Escurece a room inteira antes de desenhar dialogos/quadro.
     // Isso evita que objetos da sala, como a porta, aparecam por cima dos retratos.

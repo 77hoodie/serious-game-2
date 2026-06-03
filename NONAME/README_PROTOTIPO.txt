@@ -92,3 +92,18 @@ Atualizacao de interface:
 - Dialogos e quadro pausam o movimento do player enquanto estao abertos.
 - ENTER fecha dialogos livres e tambem sai da interface do quadro.
 - ESC continua funcionando para sair do quadro.
+
+Atualizacao de mapa e menu
+--------------------------
+- sprite_school_menu foi colocada como imagem de fundo da tela inicial.
+- sprite_map_classroom_01 foi colocada como fundo da primeira sala.
+- Os objetos de interacao do quadro e da porta agora aparecem como marcadores discretos sobre o mapa.
+- A colisao da sala inicial esta definida por retangulos invisiveis em global.lab_01_collision_rects, dentro de obj_game/Create_0.gml.
+- Para visualizar as colisoes durante ajuste, altere global.debug_collisions para true em obj_game/Create_0.gml.
+- A imagem do mapa e apenas visual; movimentacao, interacoes, porta e quadro continuam sendo controlados por objetos do GameMaker.
+
+
+FIX MAPA DA SALA
+- O mapa da sala agora e desenhado pelo obj_room_background com draw_sprite_stretched.
+- A Background Layer da rm_lab_01 foi desativada para evitar que cubra o mapa em algumas versoes do GameMaker.
+- Se precisar ajustar ordem visual, altere depth no Create do obj_room_background.

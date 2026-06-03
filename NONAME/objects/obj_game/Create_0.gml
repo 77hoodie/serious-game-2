@@ -17,6 +17,49 @@ global.lab_01_puzzle_solved = false;
 global.puzzle_attempts = 0;
 global.dialogue_timer = -1;
 
+
+// Colisoes invisiveis da primeira sala.
+// Cada retangulo segue o formato [x1, y1, x2, y2] em coordenadas da room.
+// A imagem do mapa e apenas visual; esses retangulos definem onde o player pode andar.
+global.lab_01_collision_rects = [
+    // limites externos da sala
+    [0, 0, 1366, 198],
+    [0, 704, 1366, 768],
+    [0, 0, 94, 768],
+    [1268, 0, 1366, 768],
+
+    // paredes/recortes laterais aproximados
+    [94, 0, 130, 210],
+    [94, 625, 155, 768],
+    [1205, 0, 1268, 185],
+    [1218, 330, 1268, 768],
+
+    // objetos grandes encostados nas paredes
+    [190, 120, 305, 245],
+    [960, 205, 1045, 306],
+
+    // mesa do professor
+    [610, 238, 772, 312],
+
+    // carteiras do lado esquerdo
+    [288, 300, 385, 382],
+    [238, 412, 345, 492],
+    [223, 520, 343, 610],
+    [348, 465, 455, 545],
+    [252, 617, 350, 695],
+
+    // carteiras do lado direito
+    [866, 300, 965, 382],
+    [1012, 392, 1115, 485],
+    [862, 488, 970, 570],
+    [1020, 505, 1135, 592],
+    [836, 610, 952, 698],
+    [1008, 608, 1125, 698]
+];
+
+// Ative manualmente para visualizar os retangulos de colisao durante ajustes.
+global.debug_collisions = false;
+
 global.lab_intro_page = 0;
 global.lab_intro_lines = [
     "Tutor: Ei. Voce tambem apareceu aqui agora?",

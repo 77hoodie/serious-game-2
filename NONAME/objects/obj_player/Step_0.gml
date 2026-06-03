@@ -9,7 +9,7 @@ if (global.input_mode == "none" && global.dialogue_text == "") {
         h /= len;
         v /= len;
 
-        // Define a direção visual pela última direção predominante.
+        // Define a direcao visual pela ultima direcao predominante.
         if (abs(h) > abs(v)) {
             if (h > 0) {
                 facing = "right";
@@ -32,8 +32,15 @@ if (global.input_mode == "none" && global.dialogue_text == "") {
         image_yscale = player_sprite_scale;
         image_speed = 0.18;
 
-        x = clamp(x + h * move_speed, 40, room_width - 40);
-        y = clamp(y + v * move_speed, 140, room_height - 190);
+        var nx = clamp(x + h * move_speed, 0, room_width);
+        if (map_collision_free(nx, y)) {
+            x = nx;
+        }
+
+        var ny = clamp(y + v * move_speed, 0, room_height);
+        if (map_collision_free(x, ny)) {
+            y = ny;
+        }
     } else {
         image_speed = 0;
         image_index = 1;
@@ -68,6 +75,6 @@ if (keyboard_check_pressed(ord("E")) && global.input_mode == "none" && global.di
         nearest.interact();
     } else {
         global.dialogue_text = "Nada para interagir aqui. Chegue perto do quadro, tutor ou porta e aperte E.";
-        global.dialogue_timer = 140;
+        global.dialogue_timer = -1;
     }
 }

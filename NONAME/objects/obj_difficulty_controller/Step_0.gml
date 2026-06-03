@@ -24,8 +24,9 @@ if (keyboard_check_pressed(vk_enter)) {
     global.dialogue_text = "";
     global.dialogue_timer = 0;
 
-    if (variable_global_exists("menu_music")) {
+    if (variable_global_exists("menu_music") && global.menu_music != noone) {
         audio_stop_sound(global.menu_music);
+        global.menu_music = noone;
     }
     room_goto(rm_story);
 }
