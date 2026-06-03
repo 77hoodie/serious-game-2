@@ -1,6 +1,10 @@
-// Placeholder: tutor como bola roxa.
-draw_set_color(make_color_rgb(150, 80, 220));
-draw_circle(x, y, 24, false);
+// Sprite direcional do tutor.
+draw_self();
+
 draw_set_color(c_white);
-draw_text(x - 24, y - 48, "Tutor");
-draw_text(x - 52, y + 34, "E para ajuda");
+draw_set_halign(fa_center);
+draw_set_valign(fa_top);
+draw_text(x, y - 92, "Tutor");
+draw_text(x, y + 10, "E para ajuda");
+draw_set_halign(fa_left);
+draw_set_valign(fa_top);

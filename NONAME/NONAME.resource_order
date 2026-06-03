@@ -7,5 +7,9 @@
     {"name":"sprite_player_left","order":4,"path":"sprites/sprite_player_left/sprite_player_left.yy",},
     {"name":"sprite_player_right","order":5,"path":"sprites/sprite_player_right/sprite_player_right.yy",},
     {"name":"sprite_player_up","order":3,"path":"sprites/sprite_player_up/sprite_player_up.yy",},
+    {"name":"sprite_tutor_down","order":7,"path":"sprites/sprite_tutor_down/sprite_tutor_down.yy",},
+    {"name":"sprite_tutor_left","order":9,"path":"sprites/sprite_tutor_left/sprite_tutor_left.yy",},
+    {"name":"sprite_tutor_right","order":10,"path":"sprites/sprite_tutor_right/sprite_tutor_right.yy",},
+    {"name":"sprite_tutor_up","order":8,"path":"sprites/sprite_tutor_up/sprite_tutor_up.yy",},
   ],
 }

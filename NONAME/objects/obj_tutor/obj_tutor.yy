@@ -18,6 +18,17 @@
       "%Name": "",
       "collisionObjectId": null,
       "eventNum": 0,
+      "eventType": 3,
+      "isDnD": false,
+      "name": "",
+      "resourceType": "GMEvent",
+      "resourceVersion": "2.0"
+    },
+    {
+      "$GMEvent": "v1",
+      "%Name": "",
+      "collisionObjectId": null,
+      "eventNum": 0,
       "eventType": 8,
       "isDnD": false,
       "name": "",
@@ -50,7 +61,10 @@
   "resourceType": "GMObject",
   "resourceVersion": "2.0",
   "solid": false,
-  "spriteId": null,
+  "spriteId": {
+    "name": "sprite_tutor_down",
+    "path": "sprites/sprite_tutor_down/sprite_tutor_down.yy"
+  },
   "spriteMaskId": null,
   "visible": true
 }
