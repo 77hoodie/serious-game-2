@@ -32,3 +32,8 @@ O obj_player agora usa as sprites animadas:
 
 A escala visual do personagem fica em objects/obj_player/Create_0.gml, na variável player_sprite_scale.
 Se o personagem parecer grande ou pequeno na room, ajuste esse valor.
+
+Atualizacao de sprites de batalha
+- A sprite sprite_player_battle foi integrada ao controlador de combate.
+- Ela e usada como visual padrao do jogador em todas as batalhas.
+- As sprites direcionais continuam sendo usadas na exploracao.

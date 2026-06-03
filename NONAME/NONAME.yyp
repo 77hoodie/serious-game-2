@@ -30,6 +30,7 @@
     {"id":{"name":"rm_end","path":"rooms/rm_end/rm_end.yy",},},
     {"id":{"name":"rm_lab_01","path":"rooms/rm_lab_01/rm_lab_01.yy",},},
     {"id":{"name":"snd_battle_theme","path":"sounds/snd_battle_theme/snd_battle_theme.yy",},},
+    {"id":{"name":"sprite_player_battle","path":"sprites/sprite_player_battle/sprite_player_battle.yy",},},
     {"id":{"name":"sprite_player_down","path":"sprites/sprite_player_down/sprite_player_down.yy",},},
     {"id":{"name":"sprite_player_left","path":"sprites/sprite_player_left/sprite_player_left.yy",},},
     {"id":{"name":"sprite_player_right","path":"sprites/sprite_player_right/sprite_player_right.yy",},},

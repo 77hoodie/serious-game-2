@@ -8,12 +8,12 @@ draw_set_color(c_white);
 draw_text(40, 28, "COMBATE RPG - Sala 1: Funcoes de varias variaveis");
 draw_text(40, 56, "H alterna modo aprendizado/dificil. Modo atual: " + (global.hard_mode ? "DIFICIL" : "APRENDIZADO"));
 
-// Player como bola vermelha.
-draw_set_color(c_red);
-draw_circle(260, 390, 50, false);
+// Jogador em pose de batalha.
+// A sprite sprite_player_battle sera usada como padrao visual do player em todas as batalhas.
+draw_sprite_ext(player_battle_sprite, 0, player_battle_x, player_battle_y, player_battle_scale, player_battle_scale, 0, c_white, 1);
 draw_set_color(c_white);
-draw_text(214, 455, "Jogador");
-draw_text(190, 485, "HP: " + string(player_hp) + "/" + string(max_player_hp));
+draw_text(player_battle_x - 48, player_battle_y + 14, "Jogador");
+draw_text(player_battle_x - 70, player_battle_y + 44, "HP: " + string(player_hp) + "/" + string(max_player_hp));
 
 // Inimigo como bola escura.
 draw_set_color(make_color_rgb(85, 30, 120));

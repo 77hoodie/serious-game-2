@@ -8,6 +8,12 @@ player_hp = 20;
 enemy_hp = 15;
 max_player_hp = 20;
 max_enemy_hp = 15;
+
+// Configuracao visual do jogador em todas as batalhas.
+player_battle_sprite = sprite_player_battle;
+player_battle_scale = 0.34;
+player_battle_x = 260;
+player_battle_y = 500;
 state = "choose";
 asked_question = false;
 wrong_answers = 0;
