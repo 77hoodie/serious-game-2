@@ -9,14 +9,18 @@ if (!variable_global_exists("notebook_pages")) global.notebook_pages = [];
 if (!variable_global_exists("item_cereal_bars")) global.item_cereal_bars = 0;
 if (!variable_global_exists("notebook_monitor_sem_rosto")) global.notebook_monitor_sem_rosto = false;
 if (!variable_global_exists("notebook_aluna_janela")) global.notebook_aluna_janela = false;
+if (!variable_global_exists("notebook_cartografo")) global.notebook_cartografo = false;
 if (!variable_global_exists("reward_monitor_items")) global.reward_monitor_items = false;
+if (!variable_global_exists("hp_bonus_after_cartografo")) global.hp_bonus_after_cartografo = false;
 if (!variable_global_exists("last_room_before_battle")) global.last_room_before_battle = rm_lab_01;
 
 if (!variable_global_exists("current_battle")) {
-    global.current_battle = (room == rm_battle_02) ? "aluna" : "monitor";
+    global.current_battle = (room == rm_battle_03) ? "cartografo" : ((room == rm_battle_02) ? "aluna" : "monitor");
 }
 
-if (room == rm_battle_02) {
+if (room == rm_battle_03) {
+    global.current_battle = "cartografo";
+} else if (room == rm_battle_02) {
     global.current_battle = "aluna";
 } else if (room == rm_battle_01) {
     global.current_battle = "monitor";
@@ -47,11 +51,118 @@ player_battle_y = 560;
 mode_label = global.hard_mode ? "Modo Dificil" : "Modo Aprendizado";
 
 // Configuracoes especificas por batalha.
-if (battle_id == "aluna") {
+if (battle_id == "cartografo") {
+    battle_number_label = "Batalha 03";
+    battle_concept_label = "Vetor gradiente";
+    battle_background_sprite = sprite_battle_room_03;
+    victory_room = rm_end;
+    reset_room = rm_lab_03;
+
+    enemy_name = "Cartografo";
+    enemy_hp = global.hard_mode ? 42 : 26;
+    max_enemy_hp = enemy_hp;
+    enemy_damage_min = global.hard_mode ? 7 : 3;
+    enemy_damage_max = global.hard_mode ? 11 : 5;
+    player_attack_damage = global.hard_mode ? 7 : 8;
+    enemy_battle_sprite = sprite_cartografo_battle;
+    enemy_dialogue_sprite = sprite_cartografo_dialogue;
+    enemy_battle_scale = 0.34;
+    enemy_battle_x = room_width - 310;
+    enemy_battle_y = 560;
+
+    if (global.hard_mode) {
+        review_text = "Eu: Revisao rapida. O gradiente e (df/dx, df/dy). Calculo as derivadas parciais e substituo o ponto.";
+    } else {
+        review_text = "Eu: Vou revisar. O gradiente junta df/dx e df/dy em um vetor. Esse vetor aponta para onde a funcao cresce mais rapido.";
+    }
+
+    intro_lines = [
+        "Cartografo: Finalmente. Um ponto com pernas.",
+        "Eu: Voce e o dono desses mapas?",
+        "Cartografo: Dono nao. Curador das rotas, admirador das setas, fiscal de curvas mal desenhadas.",
+        "Tutor: Ele esta falando do gradiente.",
+        "Cartografo: Estou falando de direcao. O mundo inteiro melhora quando alguem aponta direito.",
+        "Cartografo: Vamos ver se voce sabe para onde uma funcao quer crescer."
+    ];
+
+    question_bank_learning = [
+        {
+            prompt: "f(x,y) = x^2 + y^2\nNo ponto (1,2), qual e grad f?",
+            options: ["1) (2,4)", "2) (1,2)", "3) (4,2)"],
+            correct: 1,
+            solution: "df/dx = 2x e df/dy = 2y. No ponto (1,2), grad f = (2,4).",
+            hint: "Calcule uma derivada em x e outra em y. Depois junte os dois resultados no vetor.",
+            wrong: "O vetor precisa ter duas componentes: a primeira vem de df/dx e a segunda de df/dy."
+        },
+        {
+            prompt: "f(x,y) = 2x + y^2\nNo ponto (1,3), qual e grad f?",
+            options: ["1) (6,2)", "2) (2,6)", "3) (3,2)"],
+            correct: 2,
+            solution: "df/dx = 2 e df/dy = 2y. No ponto (1,3), grad f = (2,6).",
+            hint: "O termo 2x gera a componente em x. O termo y^2 gera a componente em y.",
+            wrong: "Lembre da ordem do gradiente: primeiro df/dx, depois df/dy."
+        },
+        {
+            prompt: "f(x,y) = xy\nNo ponto (3,2), qual e grad f?",
+            options: ["1) (3,2)", "2) (5,5)", "3) (2,3)"],
+            correct: 3,
+            solution: "df/dx = y e df/dy = x. No ponto (3,2), grad f = (2,3).",
+            hint: "Em xy, a derivada em x vira y, e a derivada em y vira x.",
+            wrong: "Cuidado para nao inverter o ponto com o vetor. O gradiente usa as derivadas."
+        },
+        {
+            prompt: "f(x,y) = x^2 + 3y\nNo ponto (2,1), qual e grad f?",
+            options: ["1) (3,4)", "2) (4,3)", "3) (2,3)"],
+            correct: 2,
+            solution: "df/dx = 2x e df/dy = 3. No ponto (2,1), grad f = (4,3).",
+            hint: "A derivada de 3y em relacao a y e 3. A derivada de x^2 em relacao a x e 2x.",
+            wrong: "Calcule as duas parciais separadamente e mantenha a ordem (df/dx, df/dy)."
+        }
+    ];
+
+    question_bank_hard = [
+        {
+            prompt: "f(x,y) = 2x^2 + xy\nNo ponto (1,2), qual e grad f?",
+            options: ["1) (4,2)", "2) (6,1)", "3) (2,6)"],
+            correct: 2,
+            solution: "df/dx = 4x + y e df/dy = x. No ponto (1,2), grad f = (6,1).",
+            hint: "",
+            wrong: "O termo xy contribui para as duas derivadas parciais."
+        },
+        {
+            prompt: "f(x,y) = x^2*y + y^2\nNo ponto (2,1), qual e grad f?",
+            options: ["1) (4,6)", "2) (6,4)", "3) (8,5)"],
+            correct: 1,
+            solution: "df/dx = 2xy e df/dy = x^2 + 2y. No ponto (2,1), grad f = (4,6).",
+            hint: "",
+            wrong: "Em df/dy, o termo x^2*y vira x^2."
+        },
+        {
+            prompt: "f(x,y) = x^3 + 2xy\nNo ponto (1,4), qual e grad f?",
+            options: ["1) (7,2)", "2) (9,4)", "3) (11,2)"],
+            correct: 3,
+            solution: "df/dx = 3x^2 + 2y e df/dy = 2x. No ponto (1,4), grad f = (11,2).",
+            hint: "",
+            wrong: "Nao esqueca que 2xy tambem entra em df/dx."
+        },
+        {
+            prompt: "f(x,y) = 3xy + y^2\nNo ponto (2,3), qual e grad f?",
+            options: ["1) (9,12)", "2) (12,9)", "3) (6,9)"],
+            correct: 1,
+            solution: "df/dx = 3y e df/dy = 3x + 2y. No ponto (2,3), grad f = (9,12).",
+            hint: "",
+            wrong: "Calcule df/dx e df/dy antes de substituir o ponto."
+        }
+    ];
+
+    notebook_page_title = "Vetor gradiente";
+    notebook_page_body = "O vetor gradiente junta as derivadas parciais de uma funcao. Para uma funcao f(x,y), usamos grad f = (df/dx, df/dy). Geometricamente, esse vetor aponta para a direcao em que a funcao cresce mais rapido. Exemplo: se f(x,y) = x^2 + y^2, entao grad f = (2x, 2y). No ponto (1,2), o gradiente e (2,4).";
+}
+else if (battle_id == "aluna") {
     battle_number_label = "Batalha 02";
     battle_concept_label = "Derivadas parciais";
     battle_background_sprite = sprite_battle_room_02;
-    victory_room = rm_end;
+    victory_room = rm_lab_03;
     reset_room = rm_lab_02;
 
     enemy_name = "Aluna da Janela";

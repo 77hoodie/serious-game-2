@@ -29,6 +29,9 @@ map_collision_free = function(_x, _y) {
     } else if (room == rm_lab_02) {
         if (!variable_global_exists("lab_02_collision_rects")) return true;
         rects = global.lab_02_collision_rects;
+    } else if (room == rm_lab_03) {
+        if (!variable_global_exists("lab_03_collision_rects")) return true;
+        rects = global.lab_03_collision_rects;
     } else {
         return true;
     }

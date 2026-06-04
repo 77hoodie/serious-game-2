@@ -9,17 +9,21 @@ if (!variable_global_exists("player_max_hp")) global.player_max_hp = 30;
 if (!variable_global_exists("player_hp")) global.player_hp = global.player_max_hp;
 if (!variable_global_exists("hp_bonus_after_monitor")) global.hp_bonus_after_monitor = false;
 if (!variable_global_exists("hp_bonus_after_aluna")) global.hp_bonus_after_aluna = false;
+if (!variable_global_exists("hp_bonus_after_cartografo")) global.hp_bonus_after_cartografo = false;
 
 if (!variable_global_exists("lab_01_puzzle_solved")) global.lab_01_puzzle_solved = false;
 if (!variable_global_exists("lab_02_puzzle_solved")) global.lab_02_puzzle_solved = false;
+if (!variable_global_exists("lab_03_puzzle_solved")) global.lab_03_puzzle_solved = false;
 if (!variable_global_exists("lab_01_intro_done")) global.lab_01_intro_done = false;
 if (!variable_global_exists("lab_02_intro_done")) global.lab_02_intro_done = false;
+if (!variable_global_exists("lab_03_intro_done")) global.lab_03_intro_done = false;
 
 if (!variable_global_exists("input_mode")) global.input_mode = "none";
 if (!variable_global_exists("dialogue_text")) global.dialogue_text = "";
 if (!variable_global_exists("dialogue_timer")) global.dialogue_timer = 0;
 if (!variable_global_exists("puzzle_attempts")) global.puzzle_attempts = 0;
 if (!variable_global_exists("puzzle_attempts_lab_02")) global.puzzle_attempts_lab_02 = 0;
+if (!variable_global_exists("puzzle_attempts_lab_03")) global.puzzle_attempts_lab_03 = 0;
 
 // Inventario e caderno.
 if (!variable_global_exists("item_cereal_bars")) global.item_cereal_bars = 0;
@@ -95,6 +99,33 @@ global.lab_02_collision_rects = [
     [1000, 620, 1094, 696]
 ];
 
+
+// Colisoes invisiveis da terceira sala.
+// A area do Cartografo tem chao aberto, armarios/mapas nas bordas e uma passagem na direita.
+global.lab_03_collision_rects = [
+    // limites externos
+    [0, 0, 1366, 170],
+    [0, 720, 1366, 768],
+    [0, 0, 58, 768],
+    [1310, 0, 1366, 768],
+
+    // parede superior e objetos do fundo
+    [58, 0, 420, 198],
+    [420, 0, 860, 156],
+    [860, 0, 1366, 198],
+
+    // janelas e armarios laterais
+    [58, 104, 244, 232],
+    [104, 268, 160, 522],
+    [0, 392, 74, 616],
+    [1210, 98, 1310, 250],
+    [1266, 336, 1366, 520],
+
+    // recortes perto da porta direita
+    [1198, 0, 1310, 112],
+    [1198, 236, 1310, 392]
+];
+
 // Ative manualmente para visualizar os retangulos de colisao durante ajustes.
 global.debug_collisions = false;
 
@@ -138,5 +169,23 @@ else if (room == rm_lab_02) {
     if (!global.lab_02_intro_done) {
         global.input_mode = "lab_02_intro";
         global.dialogue_text = global.lab_02_intro_lines[0];
+    }
+}
+else if (room == rm_lab_03) {
+    global.lab_03_puzzle_solved = false;
+    global.puzzle_attempts_lab_03 = 0;
+
+    global.lab_03_intro_page = 0;
+    global.lab_03_intro_lines = [
+        "Tutor: Isso aqui nem parece mais uma sala normal.",
+        "Eu: O chao virou um mapa. Tem seta para todo lado.",
+        "Tutor: Entao o assunto deve ser gradiente. Ele junta as derivadas parciais em um vetor.",
+        "Tutor: A ideia e descobrir para onde a funcao cresce mais rapido. Calcula df/dx, calcula df/dy, e forma um par.",
+        "Tutor: A mesa cartografica deve pedir esse vetor. Se aparecer um sujeito falando de mapa demais, tenta nao incentivar."
+    ];
+
+    if (!global.lab_03_intro_done) {
+        global.input_mode = "lab_03_intro";
+        global.dialogue_text = global.lab_03_intro_lines[0];
     }
 }

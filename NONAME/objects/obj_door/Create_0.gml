@@ -1,5 +1,17 @@
 interact = function() {
-    if (room == rm_lab_02) {
+    if (room == rm_lab_03) {
+        if (global.lab_03_puzzle_solved) {
+            global.input_mode = "none";
+            global.dialogue_text = "A passagem no mapa se abre como se alguem tivesse desenhado uma rota nova.";
+            global.dialogue_timer = 60;
+            global.last_room_before_battle = room;
+            global.current_battle = "cartografo";
+            room_goto(rm_battle_03);
+        } else {
+            global.dialogue_text = "Passagem bloqueada. A mesa cartografica ainda espera o vetor gradiente.";
+            global.dialogue_timer = -1;
+        }
+    } else if (room == rm_lab_02) {
         if (global.lab_02_puzzle_solved) {
             global.input_mode = "none";
             global.dialogue_text = "Ao tocar na porta, a luz da janela apaga por um instante.";

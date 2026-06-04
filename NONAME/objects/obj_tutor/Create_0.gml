@@ -47,7 +47,9 @@ set_tutor_facing_player = function() {
 interact = function() {
     set_tutor_facing_player();
 
-    if (room == rm_lab_02) {
+    if (room == rm_lab_03) {
+        global.dialogue_text = "Tutor: O gradiente junta as derivadas parciais em um vetor. Primeiro voce calcula df/dx e df/dy. Depois olha para o par que apareceu.\n\nEsse vetor mostra para onde a funcao cresce mais rapido. E, pelo jeito, essa sala gosta bastante de setas.";
+    } else if (room == rm_lab_02) {
         global.dialogue_text = "Tutor: Derivada parcial e olhar para uma variavel por vez. Se o quadro pedir df/dx, trate y como constante. Se pedir df/dy, trate x como constante.\n\nA sala fica confusa quando voce tenta mudar tudo ao mesmo tempo.";
     } else {
         global.dialogue_text = "Tutor: O quadro esta usando uma funcao de varias variaveis. Ela recebe um par, como (x,y), e devolve um valor.\n\nSe voce errar, ele deve mostrar pistas antes de deixar voce tentar de novo.";

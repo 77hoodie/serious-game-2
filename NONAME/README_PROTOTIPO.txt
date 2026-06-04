@@ -231,3 +231,16 @@ O `obj_game` deixou de ser persistente. Antes, ele continuava vivo ao trocar da 
 Agora cada sala cria seu proprio `obj_game`, mantendo o progresso em variaveis globais.
 
 Tambem foi adicionada a recompensa de +5 HP apos vencer a Aluna da Janela, seguindo a regra de aumentar a vida maxima ao passar de sala.
+
+Atualizacao - Fase 03: Cartografo
+---------------------------------
+- Adicionada a terceira sala, rm_lab_03, usando sprite_map_classroom_03.
+- Adicionada a terceira batalha, rm_battle_03, usando sprite_battle_room_03.
+- O Cartografo usa sprite_cartografo_battle no combate e sprite_cartografo_dialogue nos dialogos.
+- A sala trabalha o conceito de vetor gradiente.
+- O puzzle da mesa cartografica pede o calculo de grad f = (df/dx, df/dy).
+- O tutor acompanha o jogador na sala e explica a ideia de direcao de maior crescimento.
+- A batalha do Cartografo possui bancos de perguntas separados para Modo Aprendizado e Modo Dificil.
+- Ao vencer o Cartografo, o jogador ganha uma pagina no caderno sobre vetor gradiente e recebe +5 HP maximo.
+- Ao morrer contra o Cartografo, o jogador retorna para rm_lab_03 e precisa refazer o puzzle da fase.
+- O personagem Booly e seus assets foram mantidos no projeto, mas ainda nao receberam logica.

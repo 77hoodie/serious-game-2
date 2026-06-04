@@ -2,14 +2,15 @@
 // A HUD da sala aparece durante exploracao.
 // Dialogos, menu e quadro usam uma camada escura por cima da room.
 
-if (room != rm_lab_01 && room != rm_lab_02) {
+if (room != rm_lab_01 && room != rm_lab_02 && room != rm_lab_03) {
     exit;
 }
 
 var is_lab_02 = (room == rm_lab_02);
-var solved = is_lab_02 ? global.lab_02_puzzle_solved : global.lab_01_puzzle_solved;
-var room_title = is_lab_02 ? "Sala das Variacoes" : "Sala inicial";
-var board_label = is_lab_02 ? "Quadro pendente: derivada parcial." : "Quadro pendente: funcao de varias variaveis.";
+var is_lab_03 = (room == rm_lab_03);
+var solved = is_lab_03 ? global.lab_03_puzzle_solved : (is_lab_02 ? global.lab_02_puzzle_solved : global.lab_01_puzzle_solved);
+var room_title = is_lab_03 ? "Sala do Cartografo" : (is_lab_02 ? "Sala das Variacoes" : "Sala inicial");
+var board_label = is_lab_03 ? "Mesa pendente: vetor gradiente." : (is_lab_02 ? "Quadro pendente: derivada parcial." : "Quadro pendente: funcao de varias variaveis.");
 
 draw_set_font(-1);
 draw_set_halign(fa_left);
@@ -34,7 +35,7 @@ if (solved) {
 if (variable_global_exists("debug_collisions") && global.debug_collisions) {
     draw_set_alpha(0.28);
     draw_set_color(c_red);
-    var rects = is_lab_02 ? global.lab_02_collision_rects : global.lab_01_collision_rects;
+    var rects = is_lab_03 ? global.lab_03_collision_rects : (is_lab_02 ? global.lab_02_collision_rects : global.lab_01_collision_rects);
     for (var i = 0; i < array_length(rects); i += 1) {
         var r = rects[i];
         draw_rectangle(r[0], r[1], r[2], r[3], false);
@@ -125,14 +126,14 @@ if (global.input_mode == "player_menu") {
 
 if (global.dialogue_text != "") {
     // Escurece a room inteira antes de desenhar dialogos/quadro.
-    var overlay_alpha = (global.input_mode == "puzzle_lab_01" || global.input_mode == "puzzle_lab_02") ? 0.88 : 0.78;
+    var overlay_alpha = (global.input_mode == "puzzle_lab_01" || global.input_mode == "puzzle_lab_02" || global.input_mode == "puzzle_lab_03") ? 0.88 : 0.78;
     draw_set_alpha(overlay_alpha);
     draw_set_color(c_black);
     draw_rectangle(0, 0, room_width, room_height, false);
     draw_set_alpha(1);
 
     // O quadro usa uma caixa propria, centralizada, para nao cortar alternativas.
-    if (global.input_mode == "puzzle_lab_01" || global.input_mode == "puzzle_lab_02") {
+    if (global.input_mode == "puzzle_lab_01" || global.input_mode == "puzzle_lab_02" || global.input_mode == "puzzle_lab_03") {
         var panel_x1 = 150;
         var panel_y1 = 90;
         var panel_x2 = room_width - 150;
@@ -149,7 +150,7 @@ if (global.dialogue_text != "") {
         draw_set_halign(fa_left);
         draw_set_valign(fa_top);
         draw_set_color(c_white);
-        draw_text_transformed(panel_x1 + 34, panel_y1 + 26, is_lab_02 ? "Quadro da sala - Derivadas parciais" : "Quadro da sala", 1.25, 1.25, 0);
+        draw_text_transformed(panel_x1 + 34, panel_y1 + 26, is_lab_03 ? "Mesa cartografica - Vetor gradiente" : (is_lab_02 ? "Quadro da sala - Derivadas parciais" : "Quadro da sala"), 1.25, 1.25, 0);
 
         draw_set_alpha(0.78);
         draw_line(panel_x1 + 34, panel_y1 + 66, panel_x2 - 34, panel_y1 + 66);

@@ -196,6 +196,28 @@ else if (state == "player_message") {
 
                 battle_message = "Aluna da Janela: Entendi. Uma coisa por vez." + reward_text;
             }
+            else if (battle_id == "cartografo") {
+                if (!global.notebook_cartografo) {
+                    array_push(global.notebook_pages, {
+                        title: notebook_page_title,
+                        body: notebook_page_body
+                    });
+                    global.notebook_cartografo = true;
+                    reward_text += "\n\nUma pagina foi adicionada ao seu caderno: Vetor gradiente.";
+                }
+
+                if (!variable_global_exists("hp_bonus_after_cartografo")) global.hp_bonus_after_cartografo = false;
+                if (!global.hp_bonus_after_cartografo) {
+                    global.player_max_hp += 5;
+                    global.player_hp = global.player_max_hp;
+                    player_hp = global.player_hp;
+                    max_player_hp = global.player_max_hp;
+                    global.hp_bonus_after_cartografo = true;
+                    reward_text += "\nSua vida maxima aumentou em 5 HP.";
+                }
+
+                battle_message = "Cartografo: Eu admito. Sua seta estava aceitavel." + reward_text;
+            }
 
             message_footer = "ENTER para continuar";
             message_is_dialogue = true;
@@ -213,7 +235,9 @@ else if (state == "player_message") {
             if (player_hp < 0) player_hp = 0;
             global.player_hp = player_hp;
 
-            if (battle_id == "aluna") {
+            if (battle_id == "cartografo") {
+                battle_message = "O Cartografo redesenha a rota no ar e uma seta te atravessa.\n\nVoce perdeu " + string(dmg) + " HP.";
+            } else if (battle_id == "aluna") {
                 battle_message = "A Aluna da Janela encara o vidro e respira fundo.\n\nVoce perdeu " + string(dmg) + " HP.";
             } else {
                 battle_message = "O Monitor Sem Rosto avanca em silencio.\n\nVoce perdeu " + string(dmg) + " HP.";
@@ -256,7 +280,11 @@ else if (state == "defeat") {
             global.battle_music = noone;
         }
 
-        if (battle_id == "aluna") {
+        if (battle_id == "cartografo") {
+            global.lab_03_puzzle_solved = false;
+            global.puzzle_attempts_lab_03 = 0;
+            global.lab_03_intro_done = false;
+        } else if (battle_id == "aluna") {
             global.lab_02_puzzle_solved = false;
             global.puzzle_attempts_lab_02 = 0;
             global.lab_02_intro_done = false;

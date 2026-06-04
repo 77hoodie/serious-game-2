@@ -7,7 +7,7 @@ var menu_pressed = keyboard_check_pressed(ord("M"));
 // Abre o menu apenas durante exploracao livre.
 // Importante: quando o M abre o menu, o evento encerra aqui.
 // Antes, o mesmo pressionamento tambem fechava o menu no bloco seguinte.
-if ((room == rm_lab_01 || room == rm_lab_02) && global.input_mode == "none" && global.dialogue_text == "" && menu_pressed) {
+if ((room == rm_lab_01 || room == rm_lab_02 || room == rm_lab_03) && global.input_mode == "none" && global.dialogue_text == "" && menu_pressed) {
     global.input_mode = "player_menu";
     global.menu_tab = 0;
     global.notebook_page_index = clamp(global.notebook_page_index, 0, max(0, array_length(global.notebook_pages) - 1));
@@ -76,6 +76,22 @@ if (global.input_mode == "lab_02_intro") {
             global.dialogue_timer = 0;
         } else {
             global.dialogue_text = global.lab_02_intro_lines[global.lab_02_intro_page];
+            global.dialogue_timer = -1;
+        }
+    }
+}
+
+if (global.input_mode == "lab_03_intro") {
+    if (confirm_pressed) {
+        global.lab_03_intro_page += 1;
+
+        if (global.lab_03_intro_page >= array_length(global.lab_03_intro_lines)) {
+            global.lab_03_intro_done = true;
+            global.input_mode = "none";
+            global.dialogue_text = "";
+            global.dialogue_timer = 0;
+        } else {
+            global.dialogue_text = global.lab_03_intro_lines[global.lab_03_intro_page];
             global.dialogue_timer = -1;
         }
     }
