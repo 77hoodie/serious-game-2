@@ -244,3 +244,40 @@ Atualizacao - Fase 03: Cartografo
 - Ao vencer o Cartografo, o jogador ganha uma pagina no caderno sobre vetor gradiente e recebe +5 HP maximo.
 - Ao morrer contra o Cartografo, o jogador retorna para rm_lab_03 e precisa refazer o puzzle da fase.
 - O personagem Booly e seus assets foram mantidos no projeto, mas ainda nao receberam logica.
+
+--- Atualizacao: Fase 04 - Isiaha ---
+
+A fase 04 adiciona o boss Isiaha, ligado ao conteudo de maximos, minimos, pontos criticos e matriz Hessiana.
+
+Novas rooms:
+- rm_lab_04: Camara do Isiaha
+- rm_battle_04: Batalha contra Isiaha
+
+Novos assets usados:
+- sprite_map_classroom_04
+- sprite_battle_room_04
+- sprite_isiaha_battle
+- sprite_isiaha_dialogue_01
+- sprite_isiaha_dialogue_02
+- snd_battle_theme_04
+
+Mecanica da sala:
+- O jogador interage com um pedestal.
+- Primeiro encontra o ponto critico.
+- Depois classifica o ponto usando a Hessiana.
+- A porta so abre apos as duas etapas.
+
+Mecanica da batalha:
+- Isiaha tem duas fases.
+- Na primeira fase, cobra ponto critico e classificacoes basicas.
+- Ao chegar em metade da vida, entra na fase 2 e passa a usar a segunda sprite de dialogo.
+- Na fase 2, a cada alguns turnos ocorre o Julgamento da Hessiana, um puzzle no meio da batalha.
+- Se o jogador acerta o julgamento, bloqueia o ataque e causa dano extra.
+- Se erra, recebe dano maior da cobra.
+
+Recompensa:
+- Ao vencer, o jogador ganha uma pagina do caderno sobre maximos, minimos e Hessiana.
+- A vida maxima aumenta em 5 HP.
+
+Ajuste visual:
+- Os personagens nas batalhas foram aumentados para ficarem mais presentes na tela.

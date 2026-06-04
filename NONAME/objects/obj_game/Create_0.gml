@@ -10,13 +10,17 @@ if (!variable_global_exists("player_hp")) global.player_hp = global.player_max_h
 if (!variable_global_exists("hp_bonus_after_monitor")) global.hp_bonus_after_monitor = false;
 if (!variable_global_exists("hp_bonus_after_aluna")) global.hp_bonus_after_aluna = false;
 if (!variable_global_exists("hp_bonus_after_cartografo")) global.hp_bonus_after_cartografo = false;
+if (!variable_global_exists("hp_bonus_after_isiaha")) global.hp_bonus_after_isiaha = false;
 
 if (!variable_global_exists("lab_01_puzzle_solved")) global.lab_01_puzzle_solved = false;
 if (!variable_global_exists("lab_02_puzzle_solved")) global.lab_02_puzzle_solved = false;
 if (!variable_global_exists("lab_03_puzzle_solved")) global.lab_03_puzzle_solved = false;
+if (!variable_global_exists("lab_04_puzzle_solved")) global.lab_04_puzzle_solved = false;
+if (!variable_global_exists("lab_04_puzzle_stage")) global.lab_04_puzzle_stage = 0;
 if (!variable_global_exists("lab_01_intro_done")) global.lab_01_intro_done = false;
 if (!variable_global_exists("lab_02_intro_done")) global.lab_02_intro_done = false;
 if (!variable_global_exists("lab_03_intro_done")) global.lab_03_intro_done = false;
+if (!variable_global_exists("lab_04_intro_done")) global.lab_04_intro_done = false;
 
 if (!variable_global_exists("input_mode")) global.input_mode = "none";
 if (!variable_global_exists("dialogue_text")) global.dialogue_text = "";
@@ -24,6 +28,7 @@ if (!variable_global_exists("dialogue_timer")) global.dialogue_timer = 0;
 if (!variable_global_exists("puzzle_attempts")) global.puzzle_attempts = 0;
 if (!variable_global_exists("puzzle_attempts_lab_02")) global.puzzle_attempts_lab_02 = 0;
 if (!variable_global_exists("puzzle_attempts_lab_03")) global.puzzle_attempts_lab_03 = 0;
+if (!variable_global_exists("puzzle_attempts_lab_04")) global.puzzle_attempts_lab_04 = 0;
 
 // Inventario e caderno.
 if (!variable_global_exists("item_cereal_bars")) global.item_cereal_bars = 0;
@@ -126,6 +131,33 @@ global.lab_03_collision_rects = [
     [1198, 236, 1310, 392]
 ];
 
+
+
+// Colisoes invisiveis da quarta sala.
+// Camara do Isiaha: area central aberta com pedestal e bordas ocupadas por moveis.
+global.lab_04_collision_rects = [
+    [0, 0, 1366, 140],
+    [0, 724, 1366, 768],
+    [0, 0, 72, 768],
+    [1292, 0, 1366, 768],
+
+    // recortes e paredes internas
+    [72, 0, 530, 188],
+    [530, 0, 815, 126],
+    [815, 0, 1292, 188],
+    [72, 140, 120, 265],
+    [1218, 140, 1292, 300],
+    [1228, 360, 1292, 640],
+
+    // moveis/objetos de borda
+    [205, 98, 430, 196],
+    [325, 630, 525, 715],
+    [845, 632, 1185, 715],
+
+    // pedestal central
+    [606, 310, 760, 420]
+];
+
 // Ative manualmente para visualizar os retangulos de colisao durante ajustes.
 global.debug_collisions = false;
 
@@ -187,5 +219,25 @@ else if (room == rm_lab_03) {
     if (!global.lab_03_intro_done) {
         global.input_mode = "lab_03_intro";
         global.dialogue_text = global.lab_03_intro_lines[0];
+    }
+}
+
+else if (room == rm_lab_04) {
+    global.lab_04_puzzle_solved = false;
+    global.lab_04_puzzle_stage = 0;
+    global.puzzle_attempts_lab_04 = 0;
+
+    global.lab_04_intro_page = 0;
+    global.lab_04_intro_lines = [
+        "Tutor: Essa sala e muito mais silenciosa que as outras.",
+        "Eu: O chao parece dividido em regioes. Uma sobe, uma afunda... e aquela parece torcida.",
+        "Tutor: Isso combina com maximos, minimos e pontos de sela. O pedestal deve estar pedindo uma classificacao.",
+        "Tutor: Primeiro encontre onde as derivadas param. Depois use a Hessiana para entender o comportamento em volta do ponto.",
+        "Tutor: Se o Isiaha estiver aqui, cuidado. Ele parece tratar isso como uma prova de verdade."
+    ];
+
+    if (!global.lab_04_intro_done) {
+        global.input_mode = "lab_04_intro";
+        global.dialogue_text = global.lab_04_intro_lines[0];
     }
 }

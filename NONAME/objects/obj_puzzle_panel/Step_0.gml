@@ -127,3 +127,59 @@ if (global.input_mode == "puzzle_lab_03") {
         global.dialogue_timer = 0;
     }
 }
+
+
+if (global.input_mode == "puzzle_lab_04") {
+    var answer4 = 0;
+    if (keyboard_check_pressed(ord("1"))) answer4 = 1;
+    if (keyboard_check_pressed(ord("2"))) answer4 = 2;
+    if (keyboard_check_pressed(ord("3"))) answer4 = 3;
+
+    if (answer4 != 0) {
+        if (global.lab_04_puzzle_stage <= 0) {
+            if (answer4 == 1) {
+                global.lab_04_puzzle_stage = 1;
+                global.dialogue_text = "O pedestal aceita o ponto critico. Agora ele pede a classificacao pelo comportamento ao redor do ponto.\n\n" + lab_04_board_text();
+                global.dialogue_timer = -1;
+            } else {
+                global.puzzle_attempts_lab_04 += 1;
+                if (global.hard_mode) {
+                    global.dialogue_text = "PEDESTAL - Pontos criticos\n\nAs derivadas parciais precisam zerar ao mesmo tempo. Para x^2 + 2y^2, isso acontece quando x = 0 e y = 0.\n\n1) (0,0)\n2) (1,0)\n3) (0,2)";
+                } else if (global.puzzle_attempts_lab_04 == 1) {
+                    global.dialogue_text = "PEDESTAL - Pontos criticos\n\nDica:\nPara f(x,y) = x^2 + y^2, as derivadas sao df/dx = 2x e df/dy = 2y.\n\nQuando 2x = 0 e 2y = 0, qual e o ponto?\n\n1) (0,0)\n2) (1,1)\n3) (2,0)";
+                } else {
+                    global.dialogue_text = "Tutor: O ponto critico fica onde as duas derivadas param ao mesmo tempo. Aqui, x precisa ser 0 e y tambem precisa ser 0.\n\n1) (0,0)\n2) (1,1)\n3) (2,0)";
+                }
+                global.dialogue_timer = -1;
+            }
+        } else {
+            var correct4 = global.hard_mode ? 3 : 2;
+            if (answer4 == correct4) {
+                global.lab_04_puzzle_solved = true;
+                global.input_mode = "none";
+                if (global.hard_mode) {
+                    global.dialogue_text = "Correto. A Hessiana tem sinais opostos: uma direcao sobe e outra desce. O ponto e de sela. Porta liberada.";
+                } else {
+                    global.dialogue_text = "Correto. A curvatura aponta para cima nas duas direcoes, entao o ponto e um minimo local. Porta liberada.";
+                }
+                global.dialogue_timer = -1;
+            } else {
+                global.puzzle_attempts_lab_04 += 1;
+                if (global.hard_mode) {
+                    global.dialogue_text = "PEDESTAL - Matriz Hessiana\n\nSinais opostos significam que o ponto sobe em uma direcao e desce em outra.\n\nH = [ 2   0 ]\n    [ 0  -2 ]\n\n1) Maximo local\n2) Minimo local\n3) Ponto de sela";
+                } else if (global.puzzle_attempts_lab_04 <= 2) {
+                    global.dialogue_text = "PEDESTAL - Matriz Hessiana\n\nDica:\nSe a Hessiana indica curvatura positiva nas duas direcoes, o ponto funciona como o fundo de uma tigela.\n\n1) Maximo local\n2) Minimo local\n3) Ponto de sela";
+                } else {
+                    global.dialogue_text = "Tutor: Quando a curvatura aponta para cima nas duas direcoes, o ponto e minimo local. Escolha a alternativa 2.\n\n1) Maximo local\n2) Minimo local\n3) Ponto de sela";
+                }
+                global.dialogue_timer = -1;
+            }
+        }
+    }
+
+    if (keyboard_check_pressed(vk_escape) || keyboard_check_pressed(vk_enter)) {
+        global.input_mode = "none";
+        global.dialogue_text = "";
+        global.dialogue_timer = 0;
+    }
+}

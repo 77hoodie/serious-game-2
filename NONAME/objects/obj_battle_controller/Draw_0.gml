@@ -154,6 +154,27 @@ else if (state == "attack_question") {
     draw_text(box_x2 - 18, box_y2 - 14, message_footer);
     draw_set_alpha(1);
 }
+else if (state == "hessian_guard") {
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    draw_set_color(c_white);
+    draw_text_transformed(box_x1 + 26, box_y1 + 18, "Julgamento da Hessiana", 1.12, 1.12, 0);
+    draw_set_alpha(0.72);
+    draw_line(box_x1 + 26, box_y1 + 54, box_x2 - 26, box_y1 + 54);
+    draw_set_alpha(1);
+
+    draw_text_ext(box_x1 + 30, box_y1 + 76, special_text, 28, 620);
+
+    for (var hq = 0; hq < array_length(special_options); hq += 1) {
+        draw_text(box_x1 + 720, box_y1 + 88 + hq * 38, special_options[hq]);
+    }
+
+    draw_set_halign(fa_right);
+    draw_set_valign(fa_bottom);
+    draw_set_alpha(0.66);
+    draw_text(box_x2 - 18, box_y2 - 14, message_footer);
+    draw_set_alpha(1);
+}
 else {
     // Dialogo/mensagem. Retratos aparecem so em dialogos reais, nao em acoes do inimigo.
     var raw_text = battle_message;

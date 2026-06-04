@@ -1,5 +1,5 @@
 // Maquina de estados da batalha.
-// Estados principais: intro, choose, attack_question, player_message, enemy_message, victory, defeat.
+// Estados principais: intro, choose, attack_question, hessian_guard, player_message, enemy_message, victory, defeat.
 
 var confirm_pressed = keyboard_check_pressed(vk_enter) || keyboard_check_pressed(vk_space);
 var cancel_pressed = keyboard_check_pressed(vk_escape);
@@ -130,6 +130,12 @@ else if (state == "attack_question") {
             if (enemy_hp <= 0) {
                 pending_state = "victory";
             }
+            else if (battle_id == "isiaha" && isiaha_phase == 1 && enemy_hp <= isiaha_phase_threshold) {
+                isiaha_phase = 2;
+                enemy_dialogue_sprite = enemy_dialogue_sprite_phase2;
+                battle_message = "Isiaha: Chega. Ela ja viu o bastante.\n\nA cobra se ergue no pescoco dele, acompanhando as linhas no chao. A partir daqui, ele vai cobrar a Hessiana completa.";
+                message_is_dialogue = true;
+            }
         } else {
             wrong_answers += 1;
             battle_message = "A resposta nao fechou.\n\n" + question_wrong_feedback;
@@ -138,6 +144,48 @@ else if (state == "attack_question") {
             }
         }
         message_footer = "ENTER para continuar";
+    }
+}
+else if (state == "hessian_guard") {
+    var special_answer = 0;
+    if (keyboard_check_pressed(ord("1"))) special_answer = 1;
+    if (keyboard_check_pressed(ord("2"))) special_answer = 2;
+    if (keyboard_check_pressed(ord("3"))) special_answer = 3;
+
+    if (special_answer != 0) {
+        if (special_answer == special_correct_answer) {
+            enemy_hp -= isiaha_special_reward_damage;
+            if (enemy_hp < 0) enemy_hp = 0;
+
+            state = "enemy_message";
+            battle_message = special_solution + "\n\nVoce leu a Hessiana a tempo. A cobra recua e Isiaha perde " + string(isiaha_special_reward_damage) + " HP.";
+            message_footer = "ENTER para voltar ao seu turno";
+            message_is_dialogue = false;
+
+            if (enemy_hp <= 0) {
+                state = "player_message";
+                pending_state = "victory";
+                battle_message = special_solution + "\n\nA defesa quebrou a concentracao de Isiaha.";
+                message_footer = "ENTER para continuar";
+            }
+        } else {
+            var dmg_special = irandom_range(isiaha_special_damage_min, isiaha_special_damage_max);
+            player_hp -= dmg_special;
+            if (player_hp < 0) player_hp = 0;
+            global.player_hp = player_hp;
+
+            if (player_hp <= 0) {
+                state = "defeat";
+                battle_message = "A resposta falhou.\n\n" + special_wrong_feedback + "\n\nVoce ficou sem HP.";
+                message_footer = "ENTER para voltar";
+                message_is_dialogue = false;
+            } else {
+                state = "enemy_message";
+                battle_message = "A resposta falhou.\n\n" + special_wrong_feedback + "\n\nA cobra ataca e voce perde " + string(dmg_special) + " HP.";
+                message_footer = "ENTER para voltar ao seu turno";
+                message_is_dialogue = false;
+            }
+        }
     }
 }
 else if (state == "player_message") {
@@ -218,6 +266,28 @@ else if (state == "player_message") {
 
                 battle_message = "Cartografo: Eu admito. Sua seta estava aceitavel." + reward_text;
             }
+            else if (battle_id == "isiaha") {
+                if (!global.notebook_isiaha) {
+                    array_push(global.notebook_pages, {
+                        title: notebook_page_title,
+                        body: notebook_page_body
+                    });
+                    global.notebook_isiaha = true;
+                    reward_text += "\n\nUma pagina foi adicionada ao seu caderno: Maximos, minimos e Hessiana.";
+                }
+
+                if (!variable_global_exists("hp_bonus_after_isiaha")) global.hp_bonus_after_isiaha = false;
+                if (!global.hp_bonus_after_isiaha) {
+                    global.player_max_hp += 5;
+                    global.player_hp = global.player_max_hp;
+                    player_hp = global.player_hp;
+                    max_player_hp = global.player_max_hp;
+                    global.hp_bonus_after_isiaha = true;
+                    reward_text += "\nSua vida maxima aumentou em 5 HP.";
+                }
+
+                battle_message = "Isiaha: Voce classificou sem fingir certeza. Isso basta." + reward_text;
+            }
 
             message_footer = "ENTER para continuar";
             message_is_dialogue = true;
@@ -227,6 +297,14 @@ else if (state == "player_message") {
             message_footer = "Escolha uma acao";
             message_is_dialogue = false;
         } else {
+            if (battle_id == "isiaha" && isiaha_phase >= 2 && (turn_count mod 3 == 0)) {
+                battle_pick_special_question();
+                state = "hessian_guard";
+                message_footer = "1, 2 ou 3 para responder";
+                message_is_dialogue = false;
+                exit;
+            }
+
             state = "enemy_message";
             message_is_dialogue = false;
 
@@ -235,7 +313,13 @@ else if (state == "player_message") {
             if (player_hp < 0) player_hp = 0;
             global.player_hp = player_hp;
 
-            if (battle_id == "cartografo") {
+            if (battle_id == "isiaha") {
+                if (isiaha_phase >= 2) {
+                    battle_message = "A cobra acompanha uma curva no chao e Isiaha avanca logo depois.\n\nVoce perdeu " + string(dmg) + " HP.";
+                } else {
+                    battle_message = "Isiaha aponta para o pedestal sem mudar a expressao.\n\nVoce perdeu " + string(dmg) + " HP.";
+                }
+            } else if (battle_id == "cartografo") {
                 battle_message = "O Cartografo redesenha a rota no ar e uma seta te atravessa.\n\nVoce perdeu " + string(dmg) + " HP.";
             } else if (battle_id == "aluna") {
                 battle_message = "A Aluna da Janela encara o vidro e respira fundo.\n\nVoce perdeu " + string(dmg) + " HP.";
@@ -245,7 +329,7 @@ else if (state == "player_message") {
 
             if (player_hp <= 0) {
                 state = "defeat";
-                battle_message = "Voce ficou sem HP.\n\nAo acordar, voce volta para a sala anterior. O quadro tera que ser refeito.";
+                battle_message = "Voce ficou sem HP.\n\nAo acordar, voce volta para a sala anterior. O desafio tera que ser refeito.";
                 message_footer = "ENTER para voltar";
                 message_is_dialogue = false;
             } else {
@@ -280,7 +364,12 @@ else if (state == "defeat") {
             global.battle_music = noone;
         }
 
-        if (battle_id == "cartografo") {
+        if (battle_id == "isiaha") {
+            global.lab_04_puzzle_solved = false;
+            global.lab_04_puzzle_stage = 0;
+            global.puzzle_attempts_lab_04 = 0;
+            global.lab_04_intro_done = false;
+        } else if (battle_id == "cartografo") {
             global.lab_03_puzzle_solved = false;
             global.puzzle_attempts_lab_03 = 0;
             global.lab_03_intro_done = false;

@@ -12,3 +12,7 @@ else if (room == rm_lab_02) {
 else if (room == rm_lab_03) {
     draw_sprite_stretched(sprite_map_classroom_03, 0, 0, 0, room_width, room_height);
 }
+
+else if (room == rm_lab_04) {
+    draw_sprite_stretched(sprite_map_classroom_04, 0, 0, 0, room_width, room_height);
+}

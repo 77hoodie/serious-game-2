@@ -3,8 +3,8 @@
 draw_set_halign(fa_center);
 draw_set_valign(fa_middle);
 
-var solved = (room == rm_lab_03) ? global.lab_03_puzzle_solved : ((room == rm_lab_02) ? global.lab_02_puzzle_solved : global.lab_01_puzzle_solved);
-var label_text = solved ? "Resolvido" : ((room == rm_lab_03) ? "E - Mesa" : "E - Quadro");
+var solved = (room == rm_lab_04) ? global.lab_04_puzzle_solved : ((room == rm_lab_03) ? global.lab_03_puzzle_solved : ((room == rm_lab_02) ? global.lab_02_puzzle_solved : global.lab_01_puzzle_solved));
+var label_text = solved ? "Resolvido" : ((room == rm_lab_04) ? "E - Pedestal" : ((room == rm_lab_03) ? "E - Mesa" : "E - Quadro"));
 var box_w = 120;
 var box_h = 30;
 

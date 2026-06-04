@@ -10,15 +10,19 @@ if (!variable_global_exists("item_cereal_bars")) global.item_cereal_bars = 0;
 if (!variable_global_exists("notebook_monitor_sem_rosto")) global.notebook_monitor_sem_rosto = false;
 if (!variable_global_exists("notebook_aluna_janela")) global.notebook_aluna_janela = false;
 if (!variable_global_exists("notebook_cartografo")) global.notebook_cartografo = false;
+if (!variable_global_exists("notebook_isiaha")) global.notebook_isiaha = false;
 if (!variable_global_exists("reward_monitor_items")) global.reward_monitor_items = false;
 if (!variable_global_exists("hp_bonus_after_cartografo")) global.hp_bonus_after_cartografo = false;
+if (!variable_global_exists("hp_bonus_after_isiaha")) global.hp_bonus_after_isiaha = false;
 if (!variable_global_exists("last_room_before_battle")) global.last_room_before_battle = rm_lab_01;
 
 if (!variable_global_exists("current_battle")) {
-    global.current_battle = (room == rm_battle_03) ? "cartografo" : ((room == rm_battle_02) ? "aluna" : "monitor");
+    global.current_battle = (room == rm_battle_04) ? "isiaha" : ((room == rm_battle_03) ? "cartografo" : ((room == rm_battle_02) ? "aluna" : "monitor"));
 }
 
-if (room == rm_battle_03) {
+if (room == rm_battle_04) {
+    global.current_battle = "isiaha";
+} else if (room == rm_battle_03) {
     global.current_battle = "cartografo";
 } else if (room == rm_battle_02) {
     global.current_battle = "aluna";
@@ -30,7 +34,8 @@ battle_id = global.current_battle;
 
 if (!variable_global_exists("battle_music")) global.battle_music = noone;
 if (global.battle_music == noone) {
-    global.battle_music = audio_play_sound(snd_battle_theme, 10, true);
+    var battle_theme = (battle_id == "isiaha") ? snd_battle_theme_04 : snd_battle_theme;
+    global.battle_music = audio_play_sound(battle_theme, 10, true);
 }
 
 randomize();
@@ -44,18 +49,98 @@ max_player_hp = global.player_max_hp;
 
 // Dados visuais do jogador em todas as batalhas.
 player_battle_sprite = sprite_player_battle;
-player_battle_scale = 0.34;
+player_battle_scale = 0.42;
 player_battle_x = 260;
-player_battle_y = 560;
+player_battle_y = 590;
 
 mode_label = global.hard_mode ? "Modo Dificil" : "Modo Aprendizado";
 
 // Configuracoes especificas por batalha.
-if (battle_id == "cartografo") {
+if (battle_id == "isiaha") {
+    battle_number_label = "Batalha 04";
+    battle_concept_label = "Maximos, minimos e Hessiana";
+    battle_background_sprite = sprite_battle_room_04;
+    victory_room = rm_end;
+    reset_room = rm_lab_04;
+
+    enemy_name = "Isiaha";
+    enemy_hp = global.hard_mode ? 58 : 38;
+    max_enemy_hp = enemy_hp;
+    enemy_damage_min = global.hard_mode ? 8 : 4;
+    enemy_damage_max = global.hard_mode ? 12 : 6;
+    player_attack_damage = global.hard_mode ? 7 : 8;
+    enemy_battle_sprite = sprite_isiaha_battle;
+    enemy_dialogue_sprite_phase1 = sprite_isiaha_dialogue_01;
+    enemy_dialogue_sprite_phase2 = sprite_isiaha_dialogue_02;
+    enemy_dialogue_sprite = enemy_dialogue_sprite_phase1;
+    enemy_battle_scale = 0.42;
+    enemy_battle_x = room_width - 330;
+    enemy_battle_y = 590;
+
+    isiaha_phase = 1;
+    isiaha_phase_threshold = max_enemy_hp * 0.5;
+    isiaha_special_damage_min = global.hard_mode ? 12 : 7;
+    isiaha_special_damage_max = global.hard_mode ? 16 : 10;
+    isiaha_special_reward_damage = global.hard_mode ? 5 : 6;
+
+    if (global.hard_mode) {
+        review_text = "Eu: Revisao rapida. Ponto critico: df/dx = 0 e df/dy = 0. Hessiana: D = fxx*fyy - (fxy)^2.";
+    } else {
+        review_text = "Eu: Vou revisar. Primeiro encontro o ponto critico. Depois olho a Hessiana: se as duas curvaturas sobem, minimo; se descem, maximo; se uma sobe e outra desce, sela.";
+    }
+
+    intro_lines = [
+        "Isiaha: Voce passou por tres salas.",
+        "Eu: Voce estava esperando aqui?",
+        "Isiaha: Eu estava observando. Tem diferenca.",
+        "Tutor: A cobra... ela esta seguindo as linhas do chao.",
+        "Isiaha: Ela reconhece curvatura melhor que muita gente. E ela nao gosta de chute.",
+        "Isiaha: Se chegou ate aqui, entao classifique direito. Um ponto parado ainda pode esconder muita coisa."
+    ];
+
+    question_bank_learning = [
+        { prompt: "f(x,y) = x^2 + y^2\nQual e o ponto critico?", options: ["1) (0,0)", "2) (1,1)", "3) (2,0)"], correct: 1, solution: "df/dx = 2x e df/dy = 2y. As duas zeram em (0,0).", hint: "Procure onde as duas derivadas parciais valem zero ao mesmo tempo.", wrong: "O ponto critico precisa zerar as duas derivadas parciais." },
+        { prompt: "H = [ 2  0 ]\n    [ 0  2 ]\nComo classificar o ponto?", options: ["1) Maximo local", "2) Minimo local", "3) Ponto de sela"], correct: 2, solution: "As duas direcoes tem curvatura positiva. O ponto e minimo local.", hint: "Curvatura positiva nas duas direcoes lembra o fundo de uma tigela.", wrong: "Quando a Hessiana aponta para cima nas duas direcoes, a classificacao e minimo." },
+        { prompt: "H = [ -2  0 ]\n    [  0 -2 ]\nComo classificar o ponto?", options: ["1) Maximo local", "2) Minimo local", "3) Ponto de sela"], correct: 1, solution: "As duas direcoes tem curvatura negativa. O ponto e maximo local.", hint: "Curvatura negativa nas duas direcoes lembra o topo de uma montanha.", wrong: "Se as duas direcoes descem a partir do ponto, ele e um maximo local." },
+        { prompt: "H = [ 2  0 ]\n    [ 0 -2 ]\nComo classificar o ponto?", options: ["1) Maximo local", "2) Minimo local", "3) Ponto de sela"], correct: 3, solution: "Uma direcao sobe e outra desce. O ponto e de sela.", hint: "Sinais opostos indicam comportamentos diferentes ao redor do mesmo ponto.", wrong: "Se uma direcao sobe e outra desce, nao e maximo nem minimo: e sela." }
+    ];
+
+    question_bank_learning_phase2 = [
+        { prompt: "D = fxx*fyy - (fxy)^2\nfxx = 2, fyy = 2, fxy = 0\nQual e a classificacao?", options: ["1) Minimo local", "2) Maximo local", "3) Ponto de sela"], correct: 1, solution: "D = 2*2 - 0 = 4. Como D > 0 e fxx > 0, e minimo local.", hint: "Quando D > 0, olhe o sinal de fxx. Se fxx > 0, minimo.", wrong: "D positivo com fxx positivo indica minimo local." },
+        { prompt: "D = fxx*fyy - (fxy)^2\nfxx = -2, fyy = -3, fxy = 0\nQual e a classificacao?", options: ["1) Minimo local", "2) Maximo local", "3) Ponto de sela"], correct: 2, solution: "D = (-2)*(-3) - 0 = 6. Como D > 0 e fxx < 0, e maximo local.", hint: "D > 0 com fxx negativo indica maximo local.", wrong: "D positivo e fxx negativo indicam maximo local." },
+        { prompt: "D = fxx*fyy - (fxy)^2\nfxx = 2, fyy = -2, fxy = 0\nQual e a classificacao?", options: ["1) Minimo local", "2) Maximo local", "3) Ponto de sela"], correct: 3, solution: "D = 2*(-2) - 0 = -4. Como D < 0, e ponto de sela.", hint: "Quando D < 0, a classificacao e ponto de sela.", wrong: "D negativo indica ponto de sela." }
+    ];
+
+    question_bank_hard = [
+        { prompt: "fxx = 4, fyy = 2, fxy = 0\nD = 8 e fxx > 0. Classificacao?", options: ["1) Minimo local", "2) Maximo local", "3) Ponto de sela"], correct: 1, solution: "D > 0 e fxx > 0. O ponto e minimo local.", hint: "", wrong: "Com D positivo, o sinal de fxx decide entre minimo e maximo." },
+        { prompt: "fxx = -3, fyy = -2, fxy = 0\nD = 6 e fxx < 0. Classificacao?", options: ["1) Minimo local", "2) Maximo local", "3) Ponto de sela"], correct: 2, solution: "D > 0 e fxx < 0. O ponto e maximo local.", hint: "", wrong: "D positivo com fxx negativo indica maximo." },
+        { prompt: "fxx = 2, fyy = -5, fxy = 1\nD = -11. Classificacao?", options: ["1) Minimo local", "2) Maximo local", "3) Ponto de sela"], correct: 3, solution: "D < 0. O ponto e de sela.", hint: "", wrong: "Quando D e negativo, nao precisa olhar fxx: e sela." }
+    ];
+
+    question_bank_hard_phase2 = [
+        { prompt: "fxx = 3, fyy = 3, fxy = 1\nD = 8. Classificacao?", options: ["1) Minimo local", "2) Maximo local", "3) Ponto de sela"], correct: 1, solution: "D = 8 > 0 e fxx = 3 > 0. O ponto e minimo local.", hint: "", wrong: "D > 0 pede o sinal de fxx. Positivo indica minimo." },
+        { prompt: "fxx = -4, fyy = -3, fxy = 2\nD = 8. Classificacao?", options: ["1) Minimo local", "2) Maximo local", "3) Ponto de sela"], correct: 2, solution: "D = 8 > 0 e fxx = -4 < 0. O ponto e maximo local.", hint: "", wrong: "D > 0 e fxx negativo indicam maximo local." },
+        { prompt: "fxx = 5, fyy = -1, fxy = 2\nD = -9. Classificacao?", options: ["1) Minimo local", "2) Maximo local", "3) Ponto de sela"], correct: 3, solution: "D = -9 < 0. O ponto e de sela.", hint: "", wrong: "D negativo sempre indica ponto de sela no teste da segunda derivada." }
+    ];
+
+    hessian_special_learning = [
+        { prompt: "Julgamento da Hessiana\n\nfxx = 2, fyy = -2, fxy = 0\nD = 2*(-2) - 0^2\nQual e a classificacao?", options: ["1) Minimo local", "2) Maximo local", "3) Ponto de sela"], correct: 3, solution: "D = -4. Como D < 0, a resposta e ponto de sela.", wrong: "A cobra atacou porque D ficou negativo. Isso indicava sela." },
+        { prompt: "Julgamento da Hessiana\n\nfxx = 3, fyy = 2, fxy = 0\nD = 3*2 - 0^2\nQual e a classificacao?", options: ["1) Minimo local", "2) Maximo local", "3) Ponto de sela"], correct: 1, solution: "D = 6 e fxx > 0. A resposta e minimo local.", wrong: "D era positivo e fxx tambem. Isso indicava minimo." }
+    ];
+
+    hessian_special_hard = [
+        { prompt: "Julgamento da Hessiana\n\nfxx = -4, fyy = -3, fxy = 2\nD = (-4)*(-3) - 2^2\nQual e a classificacao?", options: ["1) Minimo local", "2) Maximo local", "3) Ponto de sela"], correct: 2, solution: "D = 12 - 4 = 8. Como D > 0 e fxx < 0, e maximo local.", wrong: "D ficou positivo, mas fxx era negativo. Isso indicava maximo local." },
+        { prompt: "Julgamento da Hessiana\n\nfxx = 2, fyy = -5, fxy = 1\nD = 2*(-5) - 1^2\nQual e a classificacao?", options: ["1) Minimo local", "2) Maximo local", "3) Ponto de sela"], correct: 3, solution: "D = -10 - 1 = -11. Como D < 0, e ponto de sela.", wrong: "D era negativo. O teste indicava ponto de sela." }
+    ];
+
+    notebook_page_title = "Maximos, minimos e Hessiana";
+    notebook_page_body = "Um ponto critico ocorre quando as derivadas parciais de primeira ordem sao zero. A matriz Hessiana reune as derivadas de segunda ordem: fxx, fxy, fyx e fyy. Para duas variaveis, usamos D = fxx*fyy - (fxy)^2. Se D > 0 e fxx > 0, temos minimo local. Se D > 0 e fxx < 0, temos maximo local. Se D < 0, temos ponto de sela. Se D = 0, o teste e inconclusivo.";
+}
+else if (battle_id == "cartografo") {
     battle_number_label = "Batalha 03";
     battle_concept_label = "Vetor gradiente";
     battle_background_sprite = sprite_battle_room_03;
-    victory_room = rm_end;
+    victory_room = rm_lab_04;
     reset_room = rm_lab_03;
 
     enemy_name = "Cartografo";
@@ -66,9 +151,9 @@ if (battle_id == "cartografo") {
     player_attack_damage = global.hard_mode ? 7 : 8;
     enemy_battle_sprite = sprite_cartografo_battle;
     enemy_dialogue_sprite = sprite_cartografo_dialogue;
-    enemy_battle_scale = 0.34;
+    enemy_battle_scale = 0.42;
     enemy_battle_x = room_width - 310;
-    enemy_battle_y = 560;
+    enemy_battle_y = 590;
 
     if (global.hard_mode) {
         review_text = "Eu: Revisao rapida. O gradiente e (df/dx, df/dy). Calculo as derivadas parciais e substituo o ponto.";
@@ -173,9 +258,9 @@ else if (battle_id == "aluna") {
     player_attack_damage = global.hard_mode ? 7 : 8;
     enemy_battle_sprite = sprite_aluna_battle;
     enemy_dialogue_sprite = sprite_aluna_dialogue;
-    enemy_battle_scale = 0.34;
+    enemy_battle_scale = 0.42;
     enemy_battle_x = room_width - 300;
-    enemy_battle_y = 560;
+    enemy_battle_y = 590;
 
     if (global.hard_mode) {
         review_text = "Eu: Revisao rapida. Em df/dx, y fica constante. Em df/dy, x fica constante. Depois substitui o ponto.";
@@ -279,9 +364,9 @@ else {
     player_attack_damage = global.hard_mode ? 7 : 8;
     enemy_battle_sprite = sprite_msr_battle;
     enemy_dialogue_sprite = sprite_msr_dialogue;
-    enemy_battle_scale = 0.34;
+    enemy_battle_scale = 0.42;
     enemy_battle_x = room_width - 300;
-    enemy_battle_y = 560;
+    enemy_battle_y = 590;
 
     if (global.hard_mode) {
         review_text = "Eu: Revisao rapida. Uma funcao de duas variaveis recebe um par ordenado. Para calcular f(x,y), os dois valores entram na expressao.";
@@ -367,8 +452,22 @@ else {
 current_question_bank = global.hard_mode ? question_bank_hard : question_bank_learning;
 last_question_index = -1;
 question_locked = false;
+last_special_question_index = -1;
+
+battle_refresh_question_bank = function() {
+    if (battle_id == "isiaha") {
+        if (isiaha_phase >= 2) {
+            current_question_bank = global.hard_mode ? question_bank_hard_phase2 : question_bank_learning_phase2;
+        } else {
+            current_question_bank = global.hard_mode ? question_bank_hard : question_bank_learning;
+        }
+    } else {
+        current_question_bank = global.hard_mode ? question_bank_hard : question_bank_learning;
+    }
+};
 
 battle_pick_question = function() {
+    battle_refresh_question_bank();
     var q_len = array_length(current_question_bank);
     var q_index = irandom(q_len - 1);
 
@@ -388,6 +487,28 @@ battle_pick_question = function() {
     question_solution = current_question.solution;
     question_hint = current_question.hint;
     question_wrong_feedback = current_question.wrong;
+};
+
+battle_pick_special_question = function() {
+    var bank = global.hard_mode ? hessian_special_hard : hessian_special_learning;
+    var q_len = array_length(bank);
+    var q_index = irandom(q_len - 1);
+
+    if (q_len > 1) {
+        var guard = 0;
+        while (q_index == last_special_question_index && guard < 8) {
+            q_index = irandom(q_len - 1);
+            guard += 1;
+        }
+    }
+
+    last_special_question_index = q_index;
+    special_question = bank[q_index];
+    special_text = special_question.prompt;
+    special_options = special_question.options;
+    special_correct_answer = special_question.correct;
+    special_solution = special_question.solution;
+    special_wrong_feedback = special_question.wrong;
 };
 
 battle_pick_question();

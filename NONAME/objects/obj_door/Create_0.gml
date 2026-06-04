@@ -1,5 +1,17 @@
 interact = function() {
-    if (room == rm_lab_03) {
+    if (room == rm_lab_04) {
+        if (global.lab_04_puzzle_solved) {
+            global.input_mode = "none";
+            global.dialogue_text = "A porta responde ao pedestal. Isiaha esta esperando do outro lado.";
+            global.dialogue_timer = 60;
+            global.last_room_before_battle = room;
+            global.current_battle = "isiaha";
+            room_goto(rm_battle_04);
+        } else {
+            global.dialogue_text = "Porta trancada. O pedestal ainda espera a classificacao do ponto critico.";
+            global.dialogue_timer = -1;
+        }
+    } else if (room == rm_lab_03) {
         if (global.lab_03_puzzle_solved) {
             global.input_mode = "none";
             global.dialogue_text = "A passagem no mapa se abre como se alguem tivesse desenhado uma rota nova.";
