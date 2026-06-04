@@ -5,6 +5,10 @@ depth = -100000;
 
 if (!variable_global_exists("difficulty_mode")) global.difficulty_mode = "learning";
 if (!variable_global_exists("hard_mode")) global.hard_mode = false;
+if (!variable_global_exists("player_max_hp")) global.player_max_hp = 30;
+if (!variable_global_exists("player_hp")) global.player_hp = global.player_max_hp;
+if (!variable_global_exists("hp_bonus_after_monitor")) global.hp_bonus_after_monitor = false;
+if (!variable_global_exists("hp_bonus_after_aluna")) global.hp_bonus_after_aluna = false;
 
 if (!variable_global_exists("lab_01_puzzle_solved")) global.lab_01_puzzle_solved = false;
 if (!variable_global_exists("lab_02_puzzle_solved")) global.lab_02_puzzle_solved = false;

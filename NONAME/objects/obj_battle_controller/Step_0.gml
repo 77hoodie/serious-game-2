@@ -163,6 +163,15 @@ else if (state == "player_message") {
                     reward_text += "\nVoce encontrou 2 barras de cereal.";
                 }
 
+                if (!global.hp_bonus_after_monitor) {
+                    global.player_max_hp += 5;
+                    global.player_hp = global.player_max_hp;
+                    player_hp = global.player_hp;
+                    max_player_hp = global.player_max_hp;
+                    global.hp_bonus_after_monitor = true;
+                    reward_text += "\nSua vida maxima aumentou em 5 HP.";
+                }
+
                 battle_message = "Monitor Sem Rosto: Voce usou os dois valores. Pode passar." + reward_text;
             }
             else if (battle_id == "aluna") {
@@ -173,6 +182,16 @@ else if (state == "player_message") {
                     });
                     global.notebook_aluna_janela = true;
                     reward_text += "\n\nUma pagina foi adicionada ao seu caderno: Derivadas parciais.";
+                }
+
+                if (!variable_global_exists("hp_bonus_after_aluna")) global.hp_bonus_after_aluna = false;
+                if (!global.hp_bonus_after_aluna) {
+                    global.player_max_hp += 5;
+                    global.player_hp = global.player_max_hp;
+                    player_hp = global.player_hp;
+                    max_player_hp = global.player_max_hp;
+                    global.hp_bonus_after_aluna = true;
+                    reward_text += "\nSua vida maxima aumentou em 5 HP.";
                 }
 
                 battle_message = "Aluna da Janela: Entendi. Uma coisa por vez." + reward_text;

@@ -5,15 +5,19 @@ var confirm_pressed = keyboard_check_pressed(vk_enter) || keyboard_check_pressed
 var menu_pressed = keyboard_check_pressed(ord("M"));
 
 // Abre o menu apenas durante exploracao livre.
+// Importante: quando o M abre o menu, o evento encerra aqui.
+// Antes, o mesmo pressionamento tambem fechava o menu no bloco seguinte.
 if ((room == rm_lab_01 || room == rm_lab_02) && global.input_mode == "none" && global.dialogue_text == "" && menu_pressed) {
     global.input_mode = "player_menu";
     global.menu_tab = 0;
     global.notebook_page_index = clamp(global.notebook_page_index, 0, max(0, array_length(global.notebook_pages) - 1));
+    exit;
 }
 
 if (global.input_mode == "player_menu") {
     if (menu_pressed || keyboard_check_pressed(vk_escape)) {
         global.input_mode = "none";
+        exit;
     }
 
     if (keyboard_check_pressed(vk_left) || keyboard_check_pressed(ord("A")) || keyboard_check_pressed(vk_right) || keyboard_check_pressed(ord("D"))) {

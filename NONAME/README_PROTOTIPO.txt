@@ -216,3 +216,18 @@ Menu do jogador:
 Itens:
 - Depois da batalha contra o Monitor Sem Rosto, o jogador ganha 2 barras de cereal.
 - Em batalha, a opcao Item permite usar uma barra de cereal para recuperar HP.
+
+
+ATUALIZACAO - MENU E PROGRESSAO DE VIDA
+- Corrigido o atalho M: o menu nao fecha mais no mesmo frame em que abre.
+- O menu pode ser aberto nas salas de exploracao com M.
+- Ao derrotar o Monitor Sem Rosto e avancar para a proxima sala, o jogador recebe +5 de vida maxima.
+- O menu agora mostra a vida maxima atual e a quantidade de barras de cereal.
+
+## Correcao do menu na segunda sala
+
+O `obj_game` deixou de ser persistente. Antes, ele continuava vivo ao trocar da primeira para a segunda sala e a `rm_lab_02` criava outro controlador igual, causando conflito no input do menu: um controlador abria o menu com M e o outro fechava no mesmo frame.
+
+Agora cada sala cria seu proprio `obj_game`, mantendo o progresso em variaveis globais.
+
+Tambem foi adicionada a recompensa de +5 HP apos vencer a Aluna da Janela, seguindo a regra de aumentar a vida maxima ao passar de sala.

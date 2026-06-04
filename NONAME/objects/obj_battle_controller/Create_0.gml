@@ -33,6 +33,7 @@ randomize();
 
 // Dados do jogador. A vida e restaurada ao entrar em cada batalha por enquanto.
 if (!variable_global_exists("player_max_hp")) global.player_max_hp = 30;
+if (!variable_global_exists("hp_bonus_after_monitor")) global.hp_bonus_after_monitor = false;
 global.player_hp = global.player_max_hp;
 player_hp = global.player_hp;
 max_player_hp = global.player_max_hp;

@@ -90,9 +90,10 @@ if (global.input_mode == "player_menu") {
 
     if (tab_items) {
         draw_text_transformed(mx1 + 44, my1 + 156, "Mochila", 1.14, 1.14, 0);
-        draw_text(mx1 + 58, my1 + 208, "Barras de cereal: " + string(global.item_cereal_bars));
+        draw_text(mx1 + 58, my1 + 208, "Vida maxima: " + string(global.player_max_hp) + " HP");
+        draw_text(mx1 + 58, my1 + 236, "Barras de cereal: " + string(global.item_cereal_bars));
         draw_set_alpha(0.72);
-        draw_text_ext(mx1 + 58, my1 + 248, "As barras de cereal podem ser usadas em batalha para recuperar HP. Por enquanto, elas sao o item basico do jogo.", 26, mx2 - mx1 - 116);
+        draw_text_ext(mx1 + 58, my1 + 280, "As barras de cereal podem ser usadas em batalha para recuperar HP. Ao passar para uma nova sala importante, sua vida maxima aumenta um pouco.", 26, mx2 - mx1 - 116);
         draw_set_alpha(1);
     } else {
         draw_text_transformed(mx1 + 44, my1 + 156, "Caderno de anotacoes", 1.14, 1.14, 0);
