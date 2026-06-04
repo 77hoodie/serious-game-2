@@ -7,20 +7,26 @@ if (!variable_global_exists("dialogue_text")) global.dialogue_text = "";
 if (!variable_global_exists("dialogue_timer")) global.dialogue_timer = -1;
 if (!variable_global_exists("notebook_pages")) global.notebook_pages = [];
 if (!variable_global_exists("item_cereal_bars")) global.item_cereal_bars = 0;
+if (!variable_global_exists("item_apples")) global.item_apples = 0;
 if (!variable_global_exists("notebook_monitor_sem_rosto")) global.notebook_monitor_sem_rosto = false;
 if (!variable_global_exists("notebook_aluna_janela")) global.notebook_aluna_janela = false;
 if (!variable_global_exists("notebook_cartografo")) global.notebook_cartografo = false;
 if (!variable_global_exists("notebook_isiaha")) global.notebook_isiaha = false;
+if (!variable_global_exists("booly_unlocked")) global.booly_unlocked = false;
+if (!variable_global_exists("booly_completed")) global.booly_completed = false;
+if (!variable_global_exists("booly_reward_apples")) global.booly_reward_apples = false;
 if (!variable_global_exists("reward_monitor_items")) global.reward_monitor_items = false;
 if (!variable_global_exists("hp_bonus_after_cartografo")) global.hp_bonus_after_cartografo = false;
 if (!variable_global_exists("hp_bonus_after_isiaha")) global.hp_bonus_after_isiaha = false;
 if (!variable_global_exists("last_room_before_battle")) global.last_room_before_battle = rm_lab_01;
 
 if (!variable_global_exists("current_battle")) {
-    global.current_battle = (room == rm_battle_04) ? "isiaha" : ((room == rm_battle_03) ? "cartografo" : ((room == rm_battle_02) ? "aluna" : "monitor"));
+    global.current_battle = (room == rm_battle_booly) ? "booly" : ((room == rm_battle_04) ? "isiaha" : ((room == rm_battle_03) ? "cartografo" : ((room == rm_battle_02) ? "aluna" : "monitor")));
 }
 
-if (room == rm_battle_04) {
+if (room == rm_battle_booly) {
+    global.current_battle = "booly";
+} else if (room == rm_battle_04) {
     global.current_battle = "isiaha";
 } else if (room == rm_battle_03) {
     global.current_battle = "cartografo";
@@ -33,8 +39,16 @@ if (room == rm_battle_04) {
 battle_id = global.current_battle;
 
 if (!variable_global_exists("battle_music")) global.battle_music = noone;
+if (variable_global_exists("background_music") && global.background_music != noone) {
+    audio_stop_sound(global.background_music);
+    global.background_music = noone;
+}
 if (global.battle_music == noone) {
-    var battle_theme = (battle_id == "isiaha") ? snd_battle_theme_04 : snd_battle_theme;
+    var battle_theme = snd_battle_theme;
+    if (battle_id == "aluna") battle_theme = snd_battle_theme_02;
+    else if (battle_id == "cartografo") battle_theme = snd_battle_theme_03;
+    else if (battle_id == "isiaha") battle_theme = snd_battle_theme_04;
+    else if (battle_id == "booly") battle_theme = snd_battle_theme_booly;
     global.battle_music = audio_play_sound(battle_theme, 10, true);
 }
 
@@ -49,14 +63,79 @@ max_player_hp = global.player_max_hp;
 
 // Dados visuais do jogador em todas as batalhas.
 player_battle_sprite = sprite_player_battle;
-player_battle_scale = 0.42;
+player_battle_scale = 0.48;
 player_battle_x = 260;
 player_battle_y = 590;
 
-mode_label = global.hard_mode ? "Modo Dificil" : "Modo Aprendizado";
+mode_label = (global.difficulty_mode == "booly") ? "Modo Booly" : (global.hard_mode ? "Modo Dificil" : "Modo Aprendizado");
 
 // Configuracoes especificas por batalha.
-if (battle_id == "isiaha") {
+
+if (battle_id == "booly") {
+    battle_number_label = "Batalha secreta";
+    battle_concept_label = "Revisao geral";
+    battle_background_sprite = sprite_battle_room_booly;
+    victory_room = rm_end;
+    reset_room = rm_lab_booly;
+
+    enemy_name = "Booly";
+    enemy_hp = 96;
+    max_enemy_hp = enemy_hp;
+    enemy_damage_min = 7;
+    enemy_damage_max = 12;
+    player_attack_damage = 7;
+    enemy_battle_sprite = sprite_booly_battle;
+    enemy_dialogue_sprite = sprite_booly_dialogue;
+    enemy_battle_scale = 0.54;
+    enemy_battle_x = room_width - 320;
+    enemy_battle_y = 590;
+
+    isiaha_phase = 1;
+    isiaha_special_damage_min = 12;
+    isiaha_special_damage_max = 17;
+    isiaha_special_reward_damage = 8;
+
+    review_text = "Eu: Revisao geral. Funcao: substituir x e y. Parcial: uma variavel muda e a outra fica parada. Gradiente: (df/dx, df/dy). Hessiana: classifica pontos criticos.";
+
+    intro_lines = [
+        "Booly: Eu sabia que voce voltaria.",
+        "Eu: Voce sabia?",
+        "Booly: Nao. Mas eu queria comecar assim.",
+        "Tutor: Essa sala tem material de todas as outras.",
+        "Booly: Exato. Eu tenho todas as apostilas. Algumas ate estao do lado certo.",
+        "Eu: Voce estudou?",
+        "Booly: Eu carreguei. Hoje vamos descobrir se isso conta."
+    ];
+
+    question_bank_learning = [
+        { prompt: "Apostila de funcoes\nf(x,y) = x^2 + y\nQuanto vale f(2,3)?", options: ["1) 5", "2) 7", "3) 9"], correct: 2, solution: "f(2,3) = 2^2 + 3 = 4 + 3 = 7.", hint: "Substitua x por 2 e y por 3.", wrong: "Booly misturou as folhas, mas essa era substituicao direta." },
+        { prompt: "Apostila de derivadas parciais\nf(x,y) = xy + y^2\nQual e df/dx no ponto (3,2)?", options: ["1) 2", "2) 3", "3) 7"], correct: 1, solution: "Em df/dx, y fica constante. A derivada de xy em relacao a x e y. No ponto, y = 2.", hint: "Para df/dx, trate y como constante.", wrong: "Essa pergunta era de derivada parcial em x." },
+        { prompt: "Apostila de gradiente\nf(x,y) = x^2 + y^2\nNo ponto (1,2), qual e grad f?", options: ["1) (2,4)", "2) (1,2)", "3) (4,2)"], correct: 1, solution: "df/dx = 2x e df/dy = 2y. No ponto (1,2), grad f = (2,4).", hint: "O gradiente junta df/dx e df/dy.", wrong: "Essa era uma pergunta de vetor gradiente." },
+        { prompt: "Apostila de Hessiana\nH = [ 2  0 ]\n    [ 0 -2 ]\nComo classificar?", options: ["1) Minimo local", "2) Maximo local", "3) Ponto de sela"], correct: 3, solution: "Uma direcao tem curvatura positiva e a outra negativa. O ponto e de sela.", hint: "Sinais opostos indicam ponto de sela.", wrong: "Essa era classificacao por Hessiana." }
+    ];
+
+    question_bank_hard = [
+        { prompt: "Apostila misturada\nf(x,y) = x^2 - y^2 + xy\nQuanto vale f(2,1)?", options: ["1) 3", "2) 5", "3) 7"], correct: 2, solution: "f(2,1) = 4 - 1 + 2 = 5.", hint: "", wrong: "Comece identificando se a pergunta pede valor, derivada, gradiente ou classificacao." },
+        { prompt: "Apostila misturada\nf(x,y) = x^2*y + 4y^2\nQual e df/dy no ponto (2,1)?", options: ["1) 8", "2) 10", "3) 12"], correct: 3, solution: "df/dy = x^2 + 8y. No ponto (2,1), fica 4 + 8 = 12.", hint: "", wrong: "Era derivada parcial em y. x fica constante." },
+        { prompt: "Apostila misturada\nf(x,y) = 2x^2 + xy\nNo ponto (1,2), qual e grad f?", options: ["1) (4,2)", "2) (6,1)", "3) (2,6)"], correct: 2, solution: "df/dx = 4x + y e df/dy = x. No ponto (1,2), grad f = (6,1).", hint: "", wrong: "Essa era de gradiente: calcule as duas parciais." },
+        { prompt: "Apostila misturada\nfxx = -4, fyy = -3, fxy = 2\nD = 8. Classificacao?", options: ["1) Minimo local", "2) Maximo local", "3) Ponto de sela"], correct: 2, solution: "D > 0 e fxx < 0. O ponto e maximo local.", hint: "", wrong: "D positivo pede o sinal de fxx. fxx negativo indica maximo." },
+        { prompt: "Apostila misturada\nfxx = 5, fyy = -1, fxy = 2\nD = -9. Classificacao?", options: ["1) Minimo local", "2) Maximo local", "3) Ponto de sela"], correct: 3, solution: "D < 0. O ponto e de sela.", hint: "", wrong: "D negativo indica sela." }
+    ];
+
+    hessian_special_learning = [
+        { prompt: "Prova surpresa do Booly\n\nEle abriu tres apostilas ao mesmo tempo.\nf(x,y) = xy + y^2\nQual e df/dy no ponto (2,3)?", options: ["1) 5", "2) 8", "3) 9"], correct: 2, solution: "df/dy = x + 2y. No ponto (2,3), fica 2 + 6 = 8.", wrong: "Booly jogou apostilas demais. Era uma derivada parcial em y." },
+        { prompt: "Prova surpresa do Booly\n\nf(x,y) = x^2 + y^2\nPonto (2,1). Qual e grad f?", options: ["1) (4,2)", "2) (2,4)", "3) (4,1)"], correct: 1, solution: "grad f = (2x, 2y). No ponto (2,1), fica (4,2).", wrong: "Era gradiente: duas derivadas parciais formando um vetor." }
+    ];
+
+    hessian_special_hard = [
+        { prompt: "Prova surpresa do Booly\n\nf(x,y) = 3xy^2 + x\nQual e df/dx no ponto (2,2)?", options: ["1) 12", "2) 13", "3) 16"], correct: 2, solution: "df/dx = 3y^2 + 1. No ponto (2,2), fica 12 + 1 = 13.", wrong: "Era parcial em x. O y ficava parado." },
+        { prompt: "Prova surpresa do Booly\n\nfxx = 2, fyy = -5, fxy = 1\nD = -11. Classificacao?", options: ["1) Minimo local", "2) Maximo local", "3) Ponto de sela"], correct: 3, solution: "D < 0, entao o ponto e de sela.", wrong: "D negativo significa ponto de sela." }
+    ];
+
+    notebook_page_title = "Desafio geral do Booly";
+    notebook_page_body = "Booly mistura todos os assuntos: funcoes de varias variaveis, derivadas parciais, gradiente e Hessiana. Para sobreviver ao desafio, primeiro identifique o tipo de pergunta. Se pedir valor, substitua o par. Se pedir parcial, mantenha uma variavel constante. Se pedir gradiente, junte as duas parciais. Se pedir Hessiana, classifique o ponto critico pelo teste da segunda derivada.";
+}
+else if (battle_id == "isiaha") {
     battle_number_label = "Batalha 04";
     battle_concept_label = "Maximos, minimos e Hessiana";
     battle_background_sprite = sprite_battle_room_04;
@@ -73,7 +152,7 @@ if (battle_id == "isiaha") {
     enemy_dialogue_sprite_phase1 = sprite_isiaha_dialogue_01;
     enemy_dialogue_sprite_phase2 = sprite_isiaha_dialogue_02;
     enemy_dialogue_sprite = enemy_dialogue_sprite_phase1;
-    enemy_battle_scale = 0.42;
+    enemy_battle_scale = 0.50;
     enemy_battle_x = room_width - 330;
     enemy_battle_y = 590;
 
@@ -151,7 +230,7 @@ else if (battle_id == "cartografo") {
     player_attack_damage = global.hard_mode ? 7 : 8;
     enemy_battle_sprite = sprite_cartografo_battle;
     enemy_dialogue_sprite = sprite_cartografo_dialogue;
-    enemy_battle_scale = 0.42;
+    enemy_battle_scale = 0.50;
     enemy_battle_x = room_width - 310;
     enemy_battle_y = 590;
 
@@ -258,7 +337,7 @@ else if (battle_id == "aluna") {
     player_attack_damage = global.hard_mode ? 7 : 8;
     enemy_battle_sprite = sprite_aluna_battle;
     enemy_dialogue_sprite = sprite_aluna_dialogue;
-    enemy_battle_scale = 0.42;
+    enemy_battle_scale = 0.50;
     enemy_battle_x = room_width - 300;
     enemy_battle_y = 590;
 
@@ -364,7 +443,7 @@ else {
     player_attack_damage = global.hard_mode ? 7 : 8;
     enemy_battle_sprite = sprite_msr_battle;
     enemy_dialogue_sprite = sprite_msr_dialogue;
-    enemy_battle_scale = 0.42;
+    enemy_battle_scale = 0.50;
     enemy_battle_x = room_width - 300;
     enemy_battle_y = 590;
 
@@ -532,13 +611,13 @@ action_desc_learning = [
     "Responder uma questao e usar o conceito aprendido para causar dano.",
     "Rever a ideia principal da sala antes de passar o turno.",
     "Receber uma dica clara sobre a pergunta atual.",
-    "Usar um item da mochila. Barras de cereal recuperam HP."
+    "Usar um item da mochila. Barras recuperam HP e macas recuperam 30 HP."
 ];
 action_desc_hard = [
     "Responder uma questao mais dificil e causar dano se acertar.",
     "Ler uma revisao breve antes de passar o turno.",
     "Indisponivel no Modo Dificil.",
-    "Usar um item da mochila. Barras de cereal recuperam HP."
+    "Usar um item da mochila. Barras recuperam HP e macas recuperam 30 HP."
 ];
 action_desc = global.hard_mode ? action_desc_hard : action_desc_learning;
 

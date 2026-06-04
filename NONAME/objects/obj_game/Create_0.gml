@@ -3,6 +3,12 @@
 // Profundidade negativa para a UI sempre desenhar por cima dos objetos da sala.
 depth = -100000;
 
+// Musica de fundo das salas de exploracao.
+if (!variable_global_exists("background_music")) global.background_music = noone;
+if (global.background_music == noone) {
+    global.background_music = audio_play_sound(snd_background_theme, 5, true);
+}
+
 if (!variable_global_exists("difficulty_mode")) global.difficulty_mode = "learning";
 if (!variable_global_exists("hard_mode")) global.hard_mode = false;
 if (!variable_global_exists("player_max_hp")) global.player_max_hp = 30;
@@ -11,6 +17,9 @@ if (!variable_global_exists("hp_bonus_after_monitor")) global.hp_bonus_after_mon
 if (!variable_global_exists("hp_bonus_after_aluna")) global.hp_bonus_after_aluna = false;
 if (!variable_global_exists("hp_bonus_after_cartografo")) global.hp_bonus_after_cartografo = false;
 if (!variable_global_exists("hp_bonus_after_isiaha")) global.hp_bonus_after_isiaha = false;
+if (!variable_global_exists("booly_unlocked")) global.booly_unlocked = false;
+if (!variable_global_exists("booly_completed")) global.booly_completed = false;
+if (!variable_global_exists("booly_reward_apples")) global.booly_reward_apples = false;
 
 if (!variable_global_exists("lab_01_puzzle_solved")) global.lab_01_puzzle_solved = false;
 if (!variable_global_exists("lab_02_puzzle_solved")) global.lab_02_puzzle_solved = false;
@@ -21,6 +30,7 @@ if (!variable_global_exists("lab_01_intro_done")) global.lab_01_intro_done = fal
 if (!variable_global_exists("lab_02_intro_done")) global.lab_02_intro_done = false;
 if (!variable_global_exists("lab_03_intro_done")) global.lab_03_intro_done = false;
 if (!variable_global_exists("lab_04_intro_done")) global.lab_04_intro_done = false;
+if (!variable_global_exists("lab_booly_intro_done")) global.lab_booly_intro_done = false;
 
 if (!variable_global_exists("input_mode")) global.input_mode = "none";
 if (!variable_global_exists("dialogue_text")) global.dialogue_text = "";
@@ -32,6 +42,7 @@ if (!variable_global_exists("puzzle_attempts_lab_04")) global.puzzle_attempts_la
 
 // Inventario e caderno.
 if (!variable_global_exists("item_cereal_bars")) global.item_cereal_bars = 0;
+if (!variable_global_exists("item_apples")) global.item_apples = 0;
 if (!variable_global_exists("notebook_pages")) global.notebook_pages = [];
 if (!variable_global_exists("notebook_page_index")) global.notebook_page_index = 0;
 if (!variable_global_exists("menu_tab")) global.menu_tab = 0;
@@ -158,6 +169,33 @@ global.lab_04_collision_rects = [
     [606, 310, 760, 420]
 ];
 
+
+
+// Colisoes invisiveis da sala secreta do Booly.
+// Deposito de apostilas: centro livre, mesa central e pilhas nas bordas.
+global.lab_booly_collision_rects = [
+    [0, 0, 1366, 126],
+    [0, 705, 1366, 768],
+    [0, 0, 72, 768],
+    [1295, 0, 1366, 768],
+
+    // laterais com janelas, estantes e pilhas
+    [72, 126, 160, 664],
+    [160, 585, 360, 705],
+    [1030, 126, 1295, 260],
+    [1110, 520, 1295, 705],
+    [1220, 300, 1295, 520],
+
+    // moveis e pilhas soltas
+    [210, 120, 440, 218],
+    [980, 120, 1115, 215],
+    [265, 612, 475, 705],
+    [775, 650, 1030, 705],
+
+    // mesa central
+    [500, 300, 850, 505]
+];
+
 // Ative manualmente para visualizar os retangulos de colisao durante ajustes.
 global.debug_collisions = false;
 
@@ -240,4 +278,11 @@ else if (room == rm_lab_04) {
         global.input_mode = "lab_04_intro";
         global.dialogue_text = global.lab_04_intro_lines[0];
     }
+}
+
+
+else if (room == rm_lab_booly) {
+    global.input_mode = "none";
+    global.dialogue_text = "";
+    global.dialogue_timer = -1;
 }

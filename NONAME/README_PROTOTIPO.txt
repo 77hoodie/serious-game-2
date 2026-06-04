@@ -281,3 +281,28 @@ Recompensa:
 
 Ajuste visual:
 - Os personagens nas batalhas foram aumentados para ficarem mais presentes na tela.
+
+--- Atualizacao: Modo Booly ---
+
+Conteudo secreto pos-game:
+- Ao terminar o jogo no Modo Dificil, o Modo Booly e liberado na tela de dificuldade.
+- Apos derrotar Isiaha no Modo Dificil, o jogador recebe 3 macas.
+- Maca: recupera 30 HP em batalha.
+- O Modo Booly leva direto para uma sala secreta com Booly.
+- A batalha do Booly mistura todos os assuntos do jogo: funcoes, derivadas parciais, gradiente e Hessiana.
+- O Booly possui prova surpresa durante a batalha, com perguntas de revisao geral.
+
+Musicas atualizadas:
+- snd_background_theme: musica de fundo das salas de exploracao.
+- snd_battle_theme: Monitor Sem Rosto.
+- snd_battle_theme_02: Aluna da Janela.
+- snd_battle_theme_03: Cartografo.
+- snd_battle_theme_04: Isiaha.
+- snd_battle_theme_booly: Booly.
+
+Rooms adicionadas:
+- rm_lab_booly
+- rm_battle_booly
+
+Objeto adicionado:
+- obj_booly

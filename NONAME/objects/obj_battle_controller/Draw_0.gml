@@ -123,7 +123,7 @@ if (state == "choose") {
 
     var desc = action_desc[action_index];
     if (action_index == 3) {
-        desc += "\n\nBarras de cereal: " + string(global.item_cereal_bars);
+        desc += "\n\nBarras de cereal: " + string(global.item_cereal_bars) + "\nMacas: " + string(global.item_apples);
     }
     draw_text_ext(box_x1 + 302, box_y1 + 62, desc, 26, box_x2 - box_x1 - 350);
 
@@ -158,7 +158,7 @@ else if (state == "hessian_guard") {
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
     draw_set_color(c_white);
-    draw_text_transformed(box_x1 + 26, box_y1 + 18, "Julgamento da Hessiana", 1.12, 1.12, 0);
+    draw_text_transformed(box_x1 + 26, box_y1 + 18, (battle_id == "booly") ? "Prova surpresa do Booly" : "Julgamento da Hessiana", 1.12, 1.12, 0);
     draw_set_alpha(0.72);
     draw_line(box_x1 + 26, box_y1 + 54, box_x2 - 26, box_y1 + 54);
     draw_set_alpha(1);

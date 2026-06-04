@@ -71,25 +71,37 @@ else if (state == "choose") {
         else if (action_index == 3) {
             state = "player_message";
 
-            if (global.item_cereal_bars > 0) {
-                if (player_hp >= max_player_hp) {
-                    pending_state = "choose";
-                    battle_message = "Eu: Minha vida ja esta cheia. Melhor guardar a barra de cereal.";
-                    message_footer = "ENTER para voltar ao menu";
-                    message_is_dialogue = true;
-                } else {
-                    var heal = 12;
-                    var before_hp = player_hp;
-                    player_hp = min(max_player_hp, player_hp + heal);
-                    global.player_hp = player_hp;
-                    global.item_cereal_bars -= 1;
+            if (player_hp >= max_player_hp) {
+                pending_state = "choose";
+                battle_message = "Eu: Minha vida ja esta cheia. Melhor guardar os itens.";
+                message_footer = "ENTER para voltar ao menu";
+                message_is_dialogue = true;
+            }
+            else if (global.item_apples > 0 && (battle_id == "booly" || global.item_cereal_bars <= 0)) {
+                var heal_apple = 30;
+                var before_hp_apple = player_hp;
+                player_hp = min(max_player_hp, player_hp + heal_apple);
+                global.player_hp = player_hp;
+                global.item_apples -= 1;
 
-                    var healed = player_hp - before_hp;
-                    pending_state = "enemy_turn";
-                    battle_message = "Eu: Comi uma barra de cereal. Recuperei " + string(healed) + " HP.\n\nBarras restantes: " + string(global.item_cereal_bars) + ".";
-                    message_footer = "ENTER para passar o turno";
-                    message_is_dialogue = true;
-                }
+                var healed_apple = player_hp - before_hp_apple;
+                pending_state = "enemy_turn";
+                battle_message = "Eu: Comi uma maca. Recuperei " + string(healed_apple) + " HP.\n\nMacas restantes: " + string(global.item_apples) + ".";
+                message_footer = "ENTER para passar o turno";
+                message_is_dialogue = true;
+            }
+            else if (global.item_cereal_bars > 0) {
+                var heal = 99;
+                var before_hp = player_hp;
+                player_hp = min(max_player_hp, player_hp + heal);
+                global.player_hp = player_hp;
+                global.item_cereal_bars -= 1;
+
+                var healed = player_hp - before_hp;
+                pending_state = "enemy_turn";
+                battle_message = "Eu: Comi uma barra de cereal. Recuperei " + string(healed) + " HP.\n\nBarras restantes: " + string(global.item_cereal_bars) + ".";
+                message_footer = "ENTER para passar o turno";
+                message_is_dialogue = true;
             } else {
                 pending_state = "choose";
                 battle_message = "Eu: Procurei na mochila, mas nao encontrei nenhum item util.";
@@ -158,14 +170,14 @@ else if (state == "hessian_guard") {
             if (enemy_hp < 0) enemy_hp = 0;
 
             state = "enemy_message";
-            battle_message = special_solution + "\n\nVoce leu a Hessiana a tempo. A cobra recua e Isiaha perde " + string(isiaha_special_reward_damage) + " HP.";
+            battle_message = special_solution + "\n\n" + ((battle_id == "booly") ? "Voce organizou a prova surpresa a tempo. Booly deixa cair algumas apostilas e perde " : "Voce leu a Hessiana a tempo. A cobra recua e Isiaha perde ") + string(isiaha_special_reward_damage) + " HP.";
             message_footer = "ENTER para voltar ao seu turno";
             message_is_dialogue = false;
 
             if (enemy_hp <= 0) {
                 state = "player_message";
                 pending_state = "victory";
-                battle_message = special_solution + "\n\nA defesa quebrou a concentracao de Isiaha.";
+                battle_message = special_solution + "\n\n" + ((battle_id == "booly") ? "A prova surpresa deixou Booly sem apostila certa." : "A defesa quebrou a concentracao de Isiaha.");
                 message_footer = "ENTER para continuar";
             }
         } else {
@@ -181,7 +193,7 @@ else if (state == "hessian_guard") {
                 message_is_dialogue = false;
             } else {
                 state = "enemy_message";
-                battle_message = "A resposta falhou.\n\n" + special_wrong_feedback + "\n\nA cobra ataca e voce perde " + string(dmg_special) + " HP.";
+                battle_message = "A resposta falhou.\n\n" + special_wrong_feedback + "\n\n" + ((battle_id == "booly") ? "Booly derruba uma pilha de apostilas em voce" : "A cobra ataca") + " e voce perde " + string(dmg_special) + " HP.";
                 message_footer = "ENTER para voltar ao seu turno";
                 message_is_dialogue = false;
             }
@@ -206,9 +218,9 @@ else if (state == "player_message") {
                 }
 
                 if (!global.reward_monitor_items) {
-                    global.item_cereal_bars += 2;
+                    global.item_cereal_bars += 3;
                     global.reward_monitor_items = true;
-                    reward_text += "\nVoce encontrou 2 barras de cereal.";
+                    reward_text += "\nVoce encontrou 3 barras de cereal.";
                 }
 
                 if (!global.hp_bonus_after_monitor) {
@@ -256,12 +268,12 @@ else if (state == "player_message") {
 
                 if (!variable_global_exists("hp_bonus_after_cartografo")) global.hp_bonus_after_cartografo = false;
                 if (!global.hp_bonus_after_cartografo) {
-                    global.player_max_hp += 5;
+                    global.player_max_hp += 8;
                     global.player_hp = global.player_max_hp;
                     player_hp = global.player_hp;
                     max_player_hp = global.player_max_hp;
                     global.hp_bonus_after_cartografo = true;
-                    reward_text += "\nSua vida maxima aumentou em 5 HP.";
+                    reward_text += "\nSua vida maxima aumentou em 8 HP.";
                 }
 
                 battle_message = "Cartografo: Eu admito. Sua seta estava aceitavel." + reward_text;
@@ -278,15 +290,42 @@ else if (state == "player_message") {
 
                 if (!variable_global_exists("hp_bonus_after_isiaha")) global.hp_bonus_after_isiaha = false;
                 if (!global.hp_bonus_after_isiaha) {
-                    global.player_max_hp += 5;
+                    global.player_max_hp += 8;
                     global.player_hp = global.player_max_hp;
                     player_hp = global.player_hp;
                     max_player_hp = global.player_max_hp;
                     global.hp_bonus_after_isiaha = true;
-                    reward_text += "\nSua vida maxima aumentou em 5 HP.";
+                    reward_text += "\nSua vida maxima aumentou em 8 HP.";
                 }
 
                 battle_message = "Isiaha: Voce classificou sem fingir certeza. Isso basta." + reward_text;
+
+                if (global.difficulty_mode == "hard" && !global.booly_unlocked) {
+                    global.booly_unlocked = true;
+                    reward_text = "\n\nModo Booly foi liberado na tela de dificuldade.";
+                    if (!global.booly_reward_apples) {
+                        global.item_apples += 3;
+                        global.booly_reward_apples = true;
+                        reward_text += "\nVoce recebeu 3 macas para o desafio secreto.";
+                    }
+                    battle_message += reward_text;
+                } else if (global.difficulty_mode == "hard" && global.booly_unlocked && !global.booly_reward_apples) {
+                    global.item_apples += 3;
+                    global.booly_reward_apples = true;
+                    battle_message += "\n\nVoce recebeu 3 macas para o desafio secreto.";
+                }
+            }
+            else if (battle_id == "booly") {
+                if (!global.booly_completed) {
+                    array_push(global.notebook_pages, {
+                        title: notebook_page_title,
+                        body: notebook_page_body
+                    });
+                    global.booly_completed = true;
+                    reward_text += "\n\nUma pagina extra foi adicionada ao seu caderno: Desafio geral do Booly.";
+                }
+
+                battle_message = "Booly: Certo. Talvez carregar apostilas funcione melhor quando alguem le junto." + reward_text;
             }
 
             message_footer = "ENTER para continuar";
@@ -297,7 +336,7 @@ else if (state == "player_message") {
             message_footer = "Escolha uma acao";
             message_is_dialogue = false;
         } else {
-            if (battle_id == "isiaha" && isiaha_phase >= 2 && (turn_count mod 3 == 0)) {
+            if ((battle_id == "isiaha" && isiaha_phase >= 2 && (turn_count mod 3 == 0)) || (battle_id == "booly" && (turn_count mod 4 == 0))) {
                 battle_pick_special_question();
                 state = "hessian_guard";
                 message_footer = "1, 2 ou 3 para responder";
@@ -323,6 +362,8 @@ else if (state == "player_message") {
                 battle_message = "O Cartografo redesenha a rota no ar e uma seta te atravessa.\n\nVoce perdeu " + string(dmg) + " HP.";
             } else if (battle_id == "aluna") {
                 battle_message = "A Aluna da Janela encara o vidro e respira fundo.\n\nVoce perdeu " + string(dmg) + " HP.";
+            } else if (battle_id == "booly") {
+                battle_message = "Booly abre uma apostila errada, fecha, abre outra, e mesmo assim acerta voce com a pilha.\n\nVoce perdeu " + string(dmg) + " HP.";
             } else {
                 battle_message = "O Monitor Sem Rosto avanca em silencio.\n\nVoce perdeu " + string(dmg) + " HP.";
             }
@@ -364,7 +405,10 @@ else if (state == "defeat") {
             global.battle_music = noone;
         }
 
-        if (battle_id == "isiaha") {
+        if (battle_id == "booly") {
+            global.lab_booly_intro_done = false;
+            if (global.item_apples < 3) global.item_apples = 3;
+        } else if (battle_id == "isiaha") {
             global.lab_04_puzzle_solved = false;
             global.lab_04_puzzle_stage = 0;
             global.puzzle_attempts_lab_04 = 0;

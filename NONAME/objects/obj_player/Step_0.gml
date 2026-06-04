@@ -71,10 +71,16 @@ if (keyboard_check_pressed(ord("E")) && global.input_mode == "none" && global.di
         if (dt < best_dist) { nearest = tutor; best_dist = dt; }
     }
 
+    var booly = instance_nearest(x, y, obj_booly);
+    if (booly != noone) {
+        var db = point_distance(x, y, booly.x, booly.y);
+        if (db < best_dist) { nearest = booly; best_dist = db; }
+    }
+
     if (nearest != noone) {
         nearest.interact();
     } else {
-        global.dialogue_text = "Nada para interagir aqui. Chegue perto do quadro, tutor ou porta e aperte E.";
+        global.dialogue_text = "Nada para interagir aqui. Chegue perto de um personagem, quadro, mesa, pedestal ou porta e aperte E.";
         global.dialogue_timer = -1;
     }
 }

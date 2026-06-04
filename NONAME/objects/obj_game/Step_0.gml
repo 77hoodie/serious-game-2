@@ -7,7 +7,7 @@ var menu_pressed = keyboard_check_pressed(ord("M"));
 // Abre o menu apenas durante exploracao livre.
 // Importante: quando o M abre o menu, o evento encerra aqui.
 // Antes, o mesmo pressionamento tambem fechava o menu no bloco seguinte.
-if ((room == rm_lab_01 || room == rm_lab_02 || room == rm_lab_03 || room == rm_lab_04) && global.input_mode == "none" && global.dialogue_text == "" && menu_pressed) {
+if ((room == rm_lab_01 || room == rm_lab_02 || room == rm_lab_03 || room == rm_lab_04 || room == rm_lab_booly) && global.input_mode == "none" && global.dialogue_text == "" && menu_pressed) {
     global.input_mode = "player_menu";
     global.menu_tab = 0;
     global.notebook_page_index = clamp(global.notebook_page_index, 0, max(0, array_length(global.notebook_pages) - 1));
@@ -117,4 +117,28 @@ if (global.input_mode == "lab_04_intro") {
 if (global.dialogue_timer > 0) {
     global.dialogue_timer -= 1;
     if (global.dialogue_timer <= 0) global.dialogue_text = "";
+}
+
+
+// Dialogo especial do Booly. Ao terminar, comeca a batalha secreta.
+if (global.input_mode == "booly_intro") {
+    if (confirm_pressed) {
+        global.booly_intro_page += 1;
+
+        if (global.booly_intro_page >= array_length(global.booly_intro_lines)) {
+            global.input_mode = "none";
+            global.dialogue_text = "";
+            global.dialogue_timer = 0;
+            global.last_room_before_battle = room;
+            global.current_battle = "booly";
+            if (variable_global_exists("background_music") && global.background_music != noone) {
+                audio_stop_sound(global.background_music);
+                global.background_music = noone;
+            }
+            room_goto(rm_battle_booly);
+        } else {
+            global.dialogue_text = global.booly_intro_lines[global.booly_intro_page];
+            global.dialogue_timer = -1;
+        }
+    }
 }

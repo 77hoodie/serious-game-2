@@ -2,16 +2,17 @@
 // A HUD da sala aparece durante exploracao.
 // Dialogos, menu e quadro usam uma camada escura por cima da room.
 
-if (room != rm_lab_01 && room != rm_lab_02 && room != rm_lab_03 && room != rm_lab_04) {
+if (room != rm_lab_01 && room != rm_lab_02 && room != rm_lab_03 && room != rm_lab_04 && room != rm_lab_booly) {
     exit;
 }
 
 var is_lab_02 = (room == rm_lab_02);
 var is_lab_03 = (room == rm_lab_03);
 var is_lab_04 = (room == rm_lab_04);
-var solved = is_lab_04 ? global.lab_04_puzzle_solved : (is_lab_03 ? global.lab_03_puzzle_solved : (is_lab_02 ? global.lab_02_puzzle_solved : global.lab_01_puzzle_solved));
-var room_title = is_lab_04 ? "Camara do Isiaha" : (is_lab_03 ? "Sala do Cartografo" : (is_lab_02 ? "Sala das Variacoes" : "Sala inicial"));
-var board_label = is_lab_04 ? "Pedestal pendente: ponto critico e Hessiana." : (is_lab_03 ? "Mesa pendente: vetor gradiente." : (is_lab_02 ? "Quadro pendente: derivada parcial." : "Quadro pendente: funcao de varias variaveis."));
+var is_booly = (room == rm_lab_booly);
+var solved = is_booly ? true : (is_lab_04 ? global.lab_04_puzzle_solved : (is_lab_03 ? global.lab_03_puzzle_solved : (is_lab_02 ? global.lab_02_puzzle_solved : global.lab_01_puzzle_solved)));
+var room_title = is_booly ? "Sala Secreta do Booly" : (is_lab_04 ? "Camara do Isiaha" : (is_lab_03 ? "Sala do Cartografo" : (is_lab_02 ? "Sala das Variacoes" : "Sala inicial")));
+var board_label = is_booly ? "Fale com Booly para iniciar o desafio secreto." : (is_lab_04 ? "Pedestal pendente: ponto critico e Hessiana." : (is_lab_03 ? "Mesa pendente: vetor gradiente." : (is_lab_02 ? "Quadro pendente: derivada parcial." : "Quadro pendente: funcao de varias variaveis.")));
 
 draw_set_font(-1);
 draw_set_halign(fa_left);
@@ -20,11 +21,14 @@ draw_set_valign(fa_top);
 // HUD simples da sala. Quando houver dialogo/quadro/menu, ela fica escurecida junto com o fundo.
 draw_set_color(c_white);
 draw_text(24, 18, "Midnight School - " + room_title);
-draw_text(24, 42, "Objetivo: fale com o tutor, resolva o quadro e avance pela porta.");
+draw_text(24, 42, is_booly ? "Objetivo: fale com Booly para entrar no desafio secreto." : "Objetivo: fale com o tutor, resolva o quadro e avance pela porta.");
 draw_text(24, 66, "Controles: WASD move | E interage | M menu | ENTER fecha/avanca dialogos");
-draw_text(24, 90, "Modo atual: " + (global.hard_mode ? "DIFICIL" : "APRENDIZADO"));
+draw_text(24, 90, "Modo atual: " + ((global.difficulty_mode == "booly") ? "BOOLY" : (global.hard_mode ? "DIFICIL" : "APRENDIZADO")));
 
-if (solved) {
+if (is_booly) {
+    draw_set_color(c_yellow);
+    draw_text(24, 118, board_label);
+} else if (solved) {
     draw_set_color(c_lime);
     draw_text(24, 118, "Quadro resolvido: a porta esta aberta.");
 } else {
@@ -36,7 +40,7 @@ if (solved) {
 if (variable_global_exists("debug_collisions") && global.debug_collisions) {
     draw_set_alpha(0.28);
     draw_set_color(c_red);
-    var rects = is_lab_04 ? global.lab_04_collision_rects : (is_lab_03 ? global.lab_03_collision_rects : (is_lab_02 ? global.lab_02_collision_rects : global.lab_01_collision_rects));
+    var rects = is_booly ? global.lab_booly_collision_rects : (is_lab_04 ? global.lab_04_collision_rects : (is_lab_03 ? global.lab_03_collision_rects : (is_lab_02 ? global.lab_02_collision_rects : global.lab_01_collision_rects)));
     for (var i = 0; i < array_length(rects); i += 1) {
         var r = rects[i];
         draw_rectangle(r[0], r[1], r[2], r[3], false);
@@ -94,8 +98,9 @@ if (global.input_mode == "player_menu") {
         draw_text_transformed(mx1 + 44, my1 + 156, "Mochila", 1.14, 1.14, 0);
         draw_text(mx1 + 58, my1 + 208, "Vida maxima: " + string(global.player_max_hp) + " HP");
         draw_text(mx1 + 58, my1 + 236, "Barras de cereal: " + string(global.item_cereal_bars));
+        draw_text(mx1 + 58, my1 + 264, "Macas: " + string(global.item_apples));
         draw_set_alpha(0.72);
-        draw_text_ext(mx1 + 58, my1 + 280, "As barras de cereal podem ser usadas em batalha para recuperar HP. Ao passar para uma nova sala importante, sua vida maxima aumenta um pouco.", 26, mx2 - mx1 - 116);
+        draw_text_ext(mx1 + 58, my1 + 306, "As barras de cereal recuperam um pouco de HP. As macas recuperam 30 HP e sao pensadas para o desafio secreto do Booly.", 26, mx2 - mx1 - 116);
         draw_set_alpha(1);
     } else {
         draw_text_transformed(mx1 + 44, my1 + 156, "Caderno de anotacoes", 1.14, 1.14, 0);
@@ -178,6 +183,9 @@ if (global.dialogue_text != "") {
         } else if (string_pos("Eu:", raw_text) == 1) {
             speaker = "Eu";
             body_text = string_copy(raw_text, 5, string_length(raw_text));
+        } else if (string_pos("Booly:", raw_text) == 1) {
+            speaker = "Booly";
+            body_text = string_copy(raw_text, 8, string_length(raw_text));
         }
 
         var box_x1 = 76;
@@ -194,6 +202,10 @@ if (global.dialogue_text != "") {
             text_w = box_x2 - text_x - 35;
         } else if (speaker == "Tutor") {
             draw_sprite_ext(sprite_tutor_dialogue, 0, room_width - 332, room_height - 498, 0.58, 0.58, 0, c_white, 1);
+            text_x = box_x1 + 30;
+            text_w = box_x2 - box_x1 - 360;
+        } else if (speaker == "Booly") {
+            draw_sprite_ext(sprite_booly_dialogue, 0, room_width - 332, room_height - 498, 0.58, 0.58, 0, c_white, 1);
             text_x = box_x1 + 30;
             text_w = box_x2 - box_x1 - 360;
         }
