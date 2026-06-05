@@ -399,37 +399,60 @@ else if (state == "victory") {
     }
 }
 else if (state == "defeat") {
+
+    if (keyboard_check_pressed(vk_down) || keyboard_check_pressed(ord("S"))) {
+        defeat_option = 1;
+    }
+
+    if (keyboard_check_pressed(vk_up) || keyboard_check_pressed(ord("W"))) {
+        defeat_option = 0;
+    }
+
     if (confirm_pressed) {
+
         if (global.battle_music != noone) {
             audio_stop_sound(global.battle_music);
             global.battle_music = noone;
         }
 
-        if (battle_id == "booly") {
-            global.lab_booly_intro_done = false;
-            if (global.item_apples < 3) global.item_apples = 3;
-        } else if (battle_id == "isiaha") {
-            global.lab_04_puzzle_solved = false;
-            global.lab_04_puzzle_stage = 0;
-            global.puzzle_attempts_lab_04 = 0;
-            global.lab_04_intro_done = false;
-        } else if (battle_id == "cartografo") {
-            global.lab_03_puzzle_solved = false;
-            global.puzzle_attempts_lab_03 = 0;
-            global.lab_03_intro_done = false;
-        } else if (battle_id == "aluna") {
-            global.lab_02_puzzle_solved = false;
-            global.puzzle_attempts_lab_02 = 0;
-            global.lab_02_intro_done = false;
-        } else {
-            global.lab_01_puzzle_solved = false;
-            global.puzzle_attempts = 0;
-            global.lab_01_intro_done = false;
-        }
+        if (defeat_option == 0) {
 
-        global.input_mode = "none";
-        global.dialogue_text = "";
-        global.dialogue_timer = 0;
-        room_goto(reset_room);
+            if (battle_id == "booly") {
+                global.lab_booly_intro_done = false;
+                if (global.item_apples < 3) global.item_apples = 3;
+            }
+            else if (battle_id == "isiaha") {
+                global.lab_04_puzzle_solved = false;
+                global.lab_04_puzzle_stage = 0;
+                global.puzzle_attempts_lab_04 = 0;
+                global.lab_04_intro_done = false;
+            }
+            else if (battle_id == "cartografo") {
+                global.lab_03_puzzle_solved = false;
+                global.puzzle_attempts_lab_03 = 0;
+                global.lab_03_intro_done = false;
+            }
+            else if (battle_id == "aluna") {
+                global.lab_02_puzzle_solved = false;
+                global.puzzle_attempts_lab_02 = 0;
+                global.lab_02_intro_done = false;
+            }
+            else {
+                global.lab_01_puzzle_solved = false;
+                global.puzzle_attempts = 0;
+                global.lab_01_intro_done = false;
+            }
+
+            global.input_mode = "none";
+            global.dialogue_text = "";
+            global.dialogue_timer = 0;
+
+            room_goto(reset_room);
+
+        } else {
+
+            room_goto(rm_title);
+
+        }
     }
 }

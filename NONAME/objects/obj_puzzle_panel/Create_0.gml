@@ -1,39 +1,38 @@
 label = "Quadro";
 
 lab_01_board_text = function() {
-    return "QUADRO - Funcoes de varias variaveis\n\nAnotacoes no canto:\n- Uma funcao f(x,y) recebe dois valores.\n- O primeiro valor do par e x.\n- O segundo valor do par e y.\n- Substitua antes de calcular.\n\nQuestao:\nf(x,y) = x^2 + y^2\nQuanto vale f(1,2)?\n\n1) 3\n2) 5\n3) 8";
+    return "QUADRO - Funcoes de varias variaveis\n\nUma funcao f(x,y) recebe dois valores.\nO primeiro valor substitui x.\nO segundo valor substitui y.\n\nExemplo:\nf(1,2) significa x=1 e y=2.\n\nQuestao:\nf(x,y)=x^2+y^2\nQuanto vale f(1,2)?\n\n1) 3\n2) 5\n3) 8";
 };
 
 lab_02_board_text = function() {
     if (global.hard_mode) {
-        return "QUADRO - Derivadas parciais\n\nAnotacoes no canto:\n- Para derivar em relacao a y, trate x como constante.\n- O termo x^2*y muda com y, mas x^2 fica como coeficiente.\n- O termo 4y^2 vira 8y.\n\nQuestao:\nf(x,y) = x^2*y + 4y^2\nQual e df/dy no ponto (2,1)?\n\n1) 8\n2) 10\n3) 12";
+        return "QUADRO - Derivadas parciais\n\nQuando derivamos em relacao a y, x permanece constante.\nApenas os termos com y mudam.\n\nExemplo:\n5x+y^2 -> df/dy=2y\n\nQuestao:\nf(x,y)=x^2*y+4y^2\nQual e df/dy no ponto (2,1)?\n\n1) 8\n2) 10\n3) 12";
     }
 
-    return "QUADRO - Derivadas parciais\n\nAnotacoes no canto:\n- Em uma derivada parcial, so uma variavel muda.\n- Para df/dx, trate y como constante.\n- Para df/dy, trate x como constante.\n\nQuestao:\nf(x,y) = x^2 + 3y\nQual e df/dx no ponto (2,1)?\n\n1) 3\n2) 4\n3) 7";
+   return "QUADRO - Derivadas parciais\n\nUma derivada parcial observa apenas uma variavel por vez.\nQuando derivamos em relacao a x, y fica constante.\n\nExemplo:\nf(x,y)=x^2+3y\nA derivada em x e 2x.\n\nQuestao:\nf(x,y)=x^2+3y\nQual e df/dx no ponto (2,1)?\n\n1) 3\n2) 4\n3) 7";
 };
 
 lab_03_board_text = function() {
     if (global.hard_mode) {
-        return "MESA CARTOGRAFICA - Vetor gradiente\n\nAnotacoes rabiscadas:\n- O gradiente junta duas derivadas parciais.\n- grad f(x,y) = (df/dx, df/dy).\n- A primeira componente aponta a variacao em x.\n- A segunda componente aponta a variacao em y.\n\nQuestao:\nf(x,y) = 2x^2 + xy\nNo ponto (1,2), qual e grad f?\n\n1) (4,2)\n2) (6,1)\n3) (2,6)";
+        return "MESA CARTOGRAFICA - Vetor gradiente\n\nO gradiente e formado pelas derivadas parciais.\n\ngrad f=(df/dx,df/dy)\n\nCalcule as duas derivadas antes de substituir o ponto.\n\nQuestao:\nf(x,y)=2x^2+xy\nNo ponto (1,2), qual e grad f?\n\n1) (4,2)\n2) (6,1)\n3) (2,6)";
     }
-
-    return "MESA CARTOGRAFICA - Vetor gradiente\n\nAnotacoes rabiscadas:\n- O gradiente mostra a direcao de maior crescimento.\n- Primeiro calcule df/dx.\n- Depois calcule df/dy.\n- Junte os dois resultados em um vetor.\n\nQuestao:\nf(x,y) = x^2 + y^2\nNo ponto (1,2), qual e grad f?\n\n1) (2,4)\n2) (1,2)\n3) (4,2)";
+		return "MESA CARTOGRAFICA - Vetor gradiente\n\nO gradiente junta as duas derivadas parciais.\n\ngrad f=(df/dx,df/dy)\n\nPrimeiro calcule df/dx.\nDepois calcule df/dy.\n\nQuestao:\nf(x,y)=x^2+y^2\nNo ponto (1,2), qual e grad f?\n\n1) (2,4)\n2) (1,2)\n3) (4,2)";
 };
 
 
 lab_04_board_text = function() {
     if (global.lab_04_puzzle_stage <= 0) {
         if (global.hard_mode) {
-            return "PEDESTAL - Pontos criticos\n\nAnotacoes gravadas:\n- Um ponto critico aparece quando df/dx = 0 e df/dy = 0.\n- Resolva as duas equacoes ao mesmo tempo.\n\nQuestao:\nf(x,y) = x^2 + 2y^2\nQual e o ponto critico?\n\n1) (0,0)\n2) (1,0)\n3) (0,2)";
+            return "PEDESTAL - Pontos criticos\n\nUm ponto critico ocorre quando df/dx=0 e df/dy=0 ao mesmo tempo.\n\nResolva as duas equacoes simultaneamente.\n\nQuestao:\nf(x,y)=x^2+2y^2\nQual e o ponto critico?\n\n1) (0,0)\n2) (1,0)\n3) (0,2)";
         }
-        return "PEDESTAL - Pontos criticos\n\nAnotacoes gravadas:\n- Primeiro procure onde a funcao fica parada.\n- Isso acontece quando as derivadas parciais valem zero.\n\nQuestao:\nf(x,y) = x^2 + y^2\nQual e o ponto critico?\n\n1) (0,0)\n2) (1,1)\n3) (2,0)";
+       return "PEDESTAL - Pontos criticos\n\nUm ponto critico ocorre quando todas as derivadas parciais valem zero.\n\nPasso 1: calcule df/dx.\nPasso 2: calcule df/dy.\nPasso 3: encontre onde ambas zeram.\n\nQuestao:\nf(x,y)=x^2+y^2\nQual e o ponto critico?\n\n1) (0,0)\n2) (1,1)\n3) (2,0)";
     }
 
     if (global.hard_mode) {
-        return "PEDESTAL - Matriz Hessiana\n\nAnotacoes gravadas:\n- Sinais opostos na Hessiana indicam ponto de sela.\n- O ponto pode estar parado e ainda assim nao ser maximo nem minimo.\n\nQuestao:\nH = [ 2   0 ]\n    [ 0  -2 ]\n\nComo classificar o ponto critico?\n\n1) Maximo local\n2) Minimo local\n3) Ponto de sela";
+      return "PEDESTAL - Hessiana\n\nfxx=curva em X (2ªderiv) fyy = curva em Y fxy = mistura X/Y\nD= fxx * fyy - (fxy)^2\n D < 0 = sela | D > 0 → fxx define o tipo\nfxx > 0 = MIN (vale baixa) fxx < 0 = MAX (pico)\n\nH=\n[fxx fxy]\n[fxy fyy]\nex:\n[2 0]\n[0 -2]\n\n1)Max 2)Min 3)Sela";
     }
 
-    return "PEDESTAL - Matriz Hessiana\n\nAnotacoes gravadas:\n- A Hessiana observa a curvatura ao redor do ponto.\n- Se a curvatura aponta para cima nas duas direcoes, temos minimo.\n\nQuestao:\nH = [ 2  0 ]\n    [ 0  2 ]\n\nComo classificar o ponto critico?\n\n1) Maximo local\n2) Minimo local\n3) Ponto de sela";
+return "PEDESTAL - Hessiana\n\nfxx = curva em X (2ªderiv) fyy = curva em Y fxy=mistura X/Y\nD = fxx * fyy - (fxy)^2\nD > 0 & fxx > 0 = min (vale) D > 0 & fxx < 0 = max (pico) D < 0 = sela\n\nH=\n[fxx fxy]\n[fxy fyy]\nex:\n[2 0]\n[0 2]\n\n1)Max 2)Min 3)Sela";
 };
 
 interact = function() {
