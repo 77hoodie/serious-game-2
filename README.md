@@ -5,7 +5,7 @@
 > Nome interno do projeto GameMaker: `NONAME`  
 > Arquivo principal: `NONAME/NONAME.yyp`  
 > Engine: GameMaker / GML  
-> Status: versão jogável em fase de finalização. O fluxo principal cobre os quatro conceitos obrigatórios da lauda; ainda faltam principalmente testes externos, relatório de testes, revisão final de créditos/licenças e, se necessário, exportação do executável.
+> Status: finalizado
 
 ---
 
