@@ -5,7 +5,7 @@
 > Nome interno do projeto GameMaker: `NONAME`  
 > Arquivo principal: `NONAME/NONAME.yyp`  
 > Engine: GameMaker / GML  
-> Status: versão jogável em fase de finalização. O fluxo principal cobre os quatro conceitos obrigatórios da lauda; ainda faltam principalmente testes externos, relatório de testes, revisão final de créditos/licenças e, se necessário, exportação do executável.
+> Status: finalizado
 
 ---
 
@@ -381,8 +381,6 @@ O projeto já possui sprites para:
 | `snd_battle_theme_03` | Batalha do Cartógrafo. | Toby Fox - THE WORLD REVOLVING |
 | `snd_battle_theme_04` | Batalha de Isiaha. | bleood - munni & drugs |
 | `snd_battle_theme_booly` | Batalha secreta do Booly. | boolymon - like kentrell |
-
-Antes da entrega final, preencher autor, fonte, licença e link de todos os assets visuais e sonoros.
 
 ---
 
