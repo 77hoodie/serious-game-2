@@ -1,3 +1,6 @@
+AVISO: este arquivo foi mantido como historico de desenvolvimento do prototipo.
+A documentacao principal atualizada esta em ../README.md e tambem em NONAME/README.md.
+
 PROTOTIPO - Escape Room + RPG educativo
 
 Controles:

@@ -209,12 +209,11 @@ else if (state == "player_message") {
 
             if (battle_id == "monitor") {
                 if (!global.notebook_monitor_sem_rosto) {
-                    array_push(global.notebook_pages, {
-                        title: notebook_page_title,
-                        body: notebook_page_body
-                    });
+                    for (var notebook_i = 0; notebook_i < array_length(notebook_pages_to_add); notebook_i += 1) {
+                        array_push(global.notebook_pages, notebook_pages_to_add[notebook_i]);
+                    }
                     global.notebook_monitor_sem_rosto = true;
-                    reward_text += "\n\nUma pagina foi adicionada ao seu caderno: Funcoes de varias variaveis.";
+                    reward_text += "\n\nNovas paginas foram adicionadas ao seu caderno: Funcoes de varias variaveis.";
                 }
 
                 if (!global.reward_monitor_items) {
@@ -236,12 +235,11 @@ else if (state == "player_message") {
             }
             else if (battle_id == "aluna") {
                 if (!global.notebook_aluna_janela) {
-                    array_push(global.notebook_pages, {
-                        title: notebook_page_title,
-                        body: notebook_page_body
-                    });
+                    for (var notebook_i = 0; notebook_i < array_length(notebook_pages_to_add); notebook_i += 1) {
+                        array_push(global.notebook_pages, notebook_pages_to_add[notebook_i]);
+                    }
                     global.notebook_aluna_janela = true;
-                    reward_text += "\n\nUma pagina foi adicionada ao seu caderno: Derivadas parciais.";
+                    reward_text += "\n\nNovas paginas foram adicionadas ao seu caderno: Derivadas parciais.";
                 }
 
                 if (!variable_global_exists("hp_bonus_after_aluna")) global.hp_bonus_after_aluna = false;
@@ -258,12 +256,11 @@ else if (state == "player_message") {
             }
             else if (battle_id == "cartografo") {
                 if (!global.notebook_cartografo) {
-                    array_push(global.notebook_pages, {
-                        title: notebook_page_title,
-                        body: notebook_page_body
-                    });
+                    for (var notebook_i = 0; notebook_i < array_length(notebook_pages_to_add); notebook_i += 1) {
+                        array_push(global.notebook_pages, notebook_pages_to_add[notebook_i]);
+                    }
                     global.notebook_cartografo = true;
-                    reward_text += "\n\nUma pagina foi adicionada ao seu caderno: Vetor gradiente.";
+                    reward_text += "\n\nNovas paginas foram adicionadas ao seu caderno: Vetor gradiente.";
                 }
 
                 if (!variable_global_exists("hp_bonus_after_cartografo")) global.hp_bonus_after_cartografo = false;
@@ -280,12 +277,11 @@ else if (state == "player_message") {
             }
             else if (battle_id == "isiaha") {
                 if (!global.notebook_isiaha) {
-                    array_push(global.notebook_pages, {
-                        title: notebook_page_title,
-                        body: notebook_page_body
-                    });
+                    for (var notebook_i = 0; notebook_i < array_length(notebook_pages_to_add); notebook_i += 1) {
+                        array_push(global.notebook_pages, notebook_pages_to_add[notebook_i]);
+                    }
                     global.notebook_isiaha = true;
-                    reward_text += "\n\nUma pagina foi adicionada ao seu caderno: Maximos, minimos e Hessiana.";
+                    reward_text += "\n\nNovas paginas foram adicionadas ao seu caderno: Maximos, minimos e Hessiana.";
                 }
 
                 if (!variable_global_exists("hp_bonus_after_isiaha")) global.hp_bonus_after_isiaha = false;
@@ -317,12 +313,11 @@ else if (state == "player_message") {
             }
             else if (battle_id == "booly") {
                 if (!global.booly_completed) {
-                    array_push(global.notebook_pages, {
-                        title: notebook_page_title,
-                        body: notebook_page_body
-                    });
+                    for (var notebook_i = 0; notebook_i < array_length(notebook_pages_to_add); notebook_i += 1) {
+                        array_push(global.notebook_pages, notebook_pages_to_add[notebook_i]);
+                    }
                     global.booly_completed = true;
-                    reward_text += "\n\nUma pagina extra foi adicionada ao seu caderno: Desafio geral do Booly.";
+                    reward_text += "\n\nNovas paginas extras foram adicionadas ao seu caderno: Desafio geral do Booly.";
                 }
 
                 battle_message = "Booly: Certo. Talvez carregar apostilas funcione melhor quando alguem le junto." + reward_text;

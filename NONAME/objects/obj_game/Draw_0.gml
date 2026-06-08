@@ -103,7 +103,7 @@ if (global.input_mode == "player_menu") {
         draw_text_ext(mx1 + 58, my1 + 306, "As barras de cereal recuperam um pouco de HP. As macas recuperam 30 HP e sao pensadas para o desafio secreto do Booly.", 26, mx2 - mx1 - 116);
         draw_set_alpha(1);
     } else {
-        draw_text_transformed(mx1 + 44, my1 + 156, "Caderno de anotacoes", 1.14, 1.14, 0);
+        draw_text_transformed(mx1 + 44, my1 + 156, "Caderno de questoes", 1.14, 1.14, 0);
         var page_count = array_length(global.notebook_pages);
         if (page_count <= 0) {
             draw_set_alpha(0.72);
@@ -123,7 +123,7 @@ if (global.input_mode == "player_menu") {
     draw_set_halign(fa_right);
     draw_set_valign(fa_bottom);
     draw_set_alpha(0.68);
-    draw_text(mx2 - 28, my2 - 22, "A/D alterna abas | W/S troca pagina | M ou ESC fecha");
+    draw_text(mx2 - 28, my2 - 22, "A/D alterna abas | W/S troca pagina do caderno | M ou ESC fecha");
     draw_set_alpha(1);
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);

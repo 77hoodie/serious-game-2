@@ -141,8 +141,16 @@ if (battle_id == "booly") {
         { prompt: "Prova surpresa do Booly\n\nfxx = 2, fyy = -5, fxy = 1\nD = -11. Classificacao?", options: ["1) Minimo local", "2) Maximo local", "3) Ponto de sela"], correct: 3, solution: "D < 0, entao o ponto e de sela.", wrong: "D negativo significa ponto de sela." }
     ];
 
-    notebook_page_title = "Desafio geral do Booly";
-    notebook_page_body = "Booly mistura todos os assuntos: funcoes de varias variaveis, derivadas parciais, gradiente e Hessiana. Para sobreviver ao desafio, primeiro identifique o tipo de pergunta. Se pedir valor, substitua o par. Se pedir parcial, mantenha uma variavel constante. Se pedir gradiente, junte as duas parciais. Se pedir Hessiana, classifique o ponto critico pelo teste da segunda derivada.";
+    notebook_pages_to_add = [
+        {
+            title: "Desafio geral do Booly - 1/2",
+            body: "Booly mistura todos os assuntos do caderno. Antes de responder, identifique o tipo da pergunta: valor de funcao, derivada parcial, gradiente ou Hessiana."
+        },
+        {
+            title: "Desafio geral do Booly - 2/2",
+            body: "Checklist rapido:\n\n- Valor da funcao: substitua x e y no par pedido.\n- Parcial: derive uma variavel e mantenha a outra constante.\n- Gradiente: junte df/dx e df/dy em um vetor.\n- Hessiana: use D = fxx*fyy - (fxy)^2 para classificar o ponto critico."
+        }
+    ];
 }
 else if (battle_id == "isiaha") {
     battle_number_label = "Batalha 04";
@@ -233,8 +241,20 @@ else if (battle_id == "isiaha") {
         { prompt: "Julgamento da Hessiana\n\nfxx = 2, fyy = -5, fxy = 1\nD = 2*(-5) - 1^2\nQual e a classificacao?", options: ["1) Minimo local", "2) Maximo local", "3) Ponto de sela"], correct: 3, solution: "D = -10 - 1 = -11. Como D < 0, e ponto de sela.", wrong: "D era negativo. O teste indicava ponto de sela." }
     ];
 
-    notebook_page_title = "Maximos, minimos e Hessiana";
-    notebook_page_body = "Depois de encontrar um ponto critico, usamos a Hessiana para classifica-lo.\n\nCalcule:\n\nD = fxx*fyy - (fxy)^2\n\nRegras:\n\nSe D > 0 e fxx > 0:\nMinimo local.\n\nSe D > 0 e fxx < 0:\nMaximo local.\n\nSe D < 0:\nPonto de sela.\n\nSe D = 0:\nO teste nao permite concluir.\n\nResumo rapido:\nD negativo = sela.\nD positivo = olhar fxx.\nfxx positivo = minimo.\nfxx negativo = maximo.";
+    notebook_pages_to_add = [
+        {
+            title: "Maximos, minimos e Hessiana - 1/3",
+            body: "Primeiro encontre o ponto critico. Isso acontece quando as derivadas parciais de primeira ordem param:\n\ndf/dx = 0\ndf/dy = 0\n\nDepois de encontrar o ponto, a Hessiana ajuda a classificar o comportamento ao redor dele."
+        },
+        {
+            title: "Maximos, minimos e Hessiana - 2/3",
+            body: "Para funcoes de duas variaveis, calcule:\n\nD = fxx*fyy - (fxy)^2\n\nEsse valor compara as curvaturas perto do ponto critico."
+        },
+        {
+            title: "Maximos, minimos e Hessiana - 3/3",
+            body: "Regras de classificacao:\n\nSe D > 0 e fxx > 0: minimo local.\nSe D > 0 e fxx < 0: maximo local.\nSe D < 0: ponto de sela.\nSe D = 0: o teste nao permite concluir.\n\nResumo: D negativo indica sela. D positivo pede olhar o sinal de fxx."
+        }
+    ];
 }
 else if (battle_id == "cartografo") {
     battle_number_label = "Batalha 03";
@@ -404,8 +424,20 @@ else if (battle_id == "cartografo") {
 		}
     ];
 
-    notebook_page_title = "Vetor gradiente";
-    notebook_page_body = "O vetor gradiente reune todas as derivadas parciais de primeira ordem.\n\nPara uma funcao f(x,y):\n\ngrad f = (df/dx, df/dy)\n\nPasso 1: calcule df/dx.\nPasso 2: calcule df/dy.\nPasso 3: substitua o ponto pedido.\nPasso 4: monte o vetor.\n\nExemplo:\nf(x,y)=x^2+y^2\n\ndf/dx=2x\ndf/dy=2y\n\nNo ponto (1,2):\ngrad f=(2,4).\n\nO gradiente aponta para a direcao de maior crescimento da funcao.";
+    notebook_pages_to_add = [
+        {
+            title: "Vetor gradiente - 1/3",
+            body: "O vetor gradiente reune as derivadas parciais de primeira ordem.\n\nPara uma funcao f(x,y):\n\ngrad f = (df/dx, df/dy)\n\nOu seja: o primeiro componente vem da parcial em x; o segundo vem da parcial em y."
+        },
+        {
+            title: "Vetor gradiente - 2/3",
+            body: "Passos para calcular:\n\n1. Calcule df/dx.\n2. Calcule df/dy.\n3. Substitua o ponto pedido.\n4. Monte o vetor na ordem correta: (df/dx, df/dy)."
+        },
+        {
+            title: "Vetor gradiente - 3/3",
+            body: "Exemplo:\n\nf(x,y)=x^2+y^2\n\ndf/dx=2x\ndf/dy=2y\n\nNo ponto (1,2):\ngrad f=(2,4).\n\nInterpretacao: o gradiente aponta para a direcao de maior crescimento da funcao."
+        }
+    ];
 }
 else if (battle_id == "aluna") {
     battle_number_label = "Batalha 02";
@@ -574,8 +606,20 @@ else if (battle_id == "aluna") {
 		}
     ];
 
-    notebook_page_title = "Derivadas parciais";
-    notebook_page_body = "A derivada parcial mede como uma funcao muda quando apenas uma variavel varia.\n\nPara calcular df/dx:\n- x varia normalmente.\n- y e tratado como constante.\n\nPara calcular df/dy:\n- y varia normalmente.\n- x e tratado como constante.\n\nExemplo:\nf(x,y)=x^2+3y\n\nPara df/dx:\ndf/dx=2x\n\nPara df/dy:\ndf/dy=3\n\nDepois de derivar, substitua os valores do ponto solicitado.";
+    notebook_pages_to_add = [
+        {
+            title: "Derivadas parciais - 1/3",
+            body: "A derivada parcial mede como uma funcao muda quando apenas uma variavel varia.\n\nA ideia da sala e olhar uma direcao por vez, sem tentar mexer em x e y ao mesmo tempo."
+        },
+        {
+            title: "Derivadas parciais - 2/3",
+            body: "Para calcular df/dx:\n- x varia normalmente.\n- y e tratado como constante.\n\nPara calcular df/dy:\n- y varia normalmente.\n- x e tratado como constante."
+        },
+        {
+            title: "Derivadas parciais - 3/3",
+            body: "Exemplo:\n\nf(x,y)=x^2+3y\n\nPara df/dx:\ndf/dx=2x\n\nPara df/dy:\ndf/dy=3\n\nDepois de derivar, substitua os valores do ponto solicitado."
+        }
+    ];
 }
 else {
     battle_number_label = "Batalha 01";
@@ -737,8 +781,20 @@ else {
 		}
     ];
 
-    notebook_page_title = "Funcoes de varias variaveis";
-    notebook_page_body = "Uma funcao de varias variaveis recebe mais de uma entrada. Nesta fase trabalhamos com f(x,y), onde x e y formam um par ordenado. Para calcular o valor da funcao, siga tres passos:\n\n1. Identifique os valores de x e y.\n2. Substitua cada variavel pelo valor correspondente.\n3. Resolva a expressao respeitando a ordem das operacoes.\n\nExemplo:\nf(x,y) = x^2 + y^2\nf(1,2) = 1^2 + 2^2 = 1 + 4 = 5.\n\nSempre confira se nao trocou os valores de x e y durante a substituicao.";
+    notebook_pages_to_add = [
+        {
+            title: "Funcoes de varias variaveis - 1/3",
+            body: "Uma funcao de varias variaveis recebe mais de uma entrada. Nesta fase usamos f(x,y), onde x e y formam um par ordenado."
+        },
+        {
+            title: "Funcoes de varias variaveis - 2/3",
+            body: "Para calcular o valor da funcao:\n\n1. Identifique os valores de x e y.\n2. Substitua cada variavel pelo valor correspondente.\n3. Resolva a expressao respeitando a ordem das operacoes."
+        },
+        {
+            title: "Funcoes de varias variaveis - 3/3",
+            body: "Exemplo:\n\nf(x,y) = x^2 + y^2\nf(1,2) = 1^2 + 2^2 = 1 + 4 = 5.\n\nCuidado: sempre confira se nao trocou os valores de x e y durante a substituicao."
+        }
+    ];
 }
 
 current_question_bank = global.hard_mode ? question_bank_hard : question_bank_learning;
