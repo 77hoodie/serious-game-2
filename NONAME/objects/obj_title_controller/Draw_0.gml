@@ -29,7 +29,7 @@ draw_set_color(c_white);
 draw_text_transformed(room_width * 0.5, room_height * 0.35, "Midnight School", 3.2, 3.2, 0);
 
 draw_set_alpha(0.75 * title_alpha);
-draw_text(room_width * 0.5, room_height * 0.46, "Serious game de calculo multivariavel");
+draw_text(room_width * 0.5, room_height * 0.46, " ");
 
 // Aviso de entrada.
 var blink = 0.45 + 0.55 * abs(sin(press_timer / 28));
@@ -41,7 +41,7 @@ draw_text(room_width * 0.5, room_height * 0.72, "para escolher a dificuldade");
 draw_set_alpha(0.48 * title_alpha);
 draw_set_halign(fa_left);
 draw_set_valign(fa_bottom);
-draw_text(40, room_height - 34, "Prototipo em desenvolvimento");
+draw_text(40, room_height - 34, " ");
 
 draw_set_alpha(1);
 draw_set_halign(fa_left);
